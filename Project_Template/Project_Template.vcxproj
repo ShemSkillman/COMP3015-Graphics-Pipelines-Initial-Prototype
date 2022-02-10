@@ -79,7 +79,7 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <LinkIncremental>true</LinkIncremental>
     <IncludePath>$(SolutionDir)Dependencies\include;$(IncludePath)</IncludePath>
-    <LibraryPath>$(SolutionDir)Dependencies\lib;$(LibraryPath)</LibraryPath>
+    <LibraryPath>C:\Dependencies\lib;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <LinkIncremental>false</LinkIncremental>
@@ -148,6 +148,9 @@
     <ClCompile Include="glad.c" />
     <ClCompile Include="helper\glslprogram.cpp" />
     <ClCompile Include="helper\glutils.cpp" />
+    <ClCompile Include="helper\teapot.cpp" />
+    <ClCompile Include="helper\torus.cpp" />
+    <ClCompile Include="helper\trianglemesh.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="scenebasic_uniform.cpp" />
   </ItemGroup>
@@ -156,13 +159,48 @@
     <None Include="shader\basic_uniform.vert" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Dependencies\include\glad\glad.h" />
+    <ClInclude Include="Dependencies\include\GLFW\glfw3.h" />
+    <ClInclude Include="Dependencies\include\GLFW\glfw3native.h" />
+    <ClInclude Include="Dependencies\include\glm\common.hpp" />
+    <ClInclude Include="Dependencies\include\glm\exponential.hpp" />
+    <ClInclude Include="Dependencies\include\glm\ext.hpp" />
+    <ClInclude Include="Dependencies\include\glm\fwd.hpp" />
+    <ClInclude Include="Dependencies\include\glm\geometric.hpp" />
+    <ClInclude Include="Dependencies\include\glm\glm.hpp" />
+    <ClInclude Include="Dependencies\include\glm\integer.hpp" />
+    <ClInclude Include="Dependencies\include\glm\mat2x2.hpp" />
+    <ClInclude Include="Dependencies\include\glm\mat2x3.hpp" />
+    <ClInclude Include="Dependencies\include\glm\mat2x4.hpp" />
+    <ClInclude Include="Dependencies\include\glm\mat3x2.hpp" />
+    <ClInclude Include="Dependencies\include\glm\mat3x3.hpp" />
+    <ClInclude Include="Dependencies\include\glm\mat3x4.hpp" />
+    <ClInclude Include="Dependencies\include\glm\mat4x2.hpp" />
+    <ClInclude Include="Dependencies\include\glm\mat4x3.hpp" />
+    <ClInclude Include="Dependencies\include\glm\mat4x4.hpp" />
+    <ClInclude Include="Dependencies\include\glm\matrix.hpp" />
+    <ClInclude Include="Dependencies\include\glm\packing.hpp" />
+    <ClInclude Include="Dependencies\include\glm\trigonometric.hpp" />
+    <ClInclude Include="Dependencies\include\glm\vec2.hpp" />
+    <ClInclude Include="Dependencies\include\glm\vec3.hpp" />
+    <ClInclude Include="Dependencies\include\glm\vec4.hpp" />
+    <ClInclude Include="Dependencies\include\glm\vector_relational.hpp" />
+    <ClInclude Include="Dependencies\include\KHR\khrplatform.h" />
+    <ClInclude Include="helper\drawable.h" />
     <ClInclude Include="helper\glslprogram.h" />
     <ClInclude Include="helper\glutils.h" />
     <ClInclude Include="helper\scene.h" />
     <ClInclude Include="helper\scenerunner.h" />
     <ClInclude Include="helper\stb\stb_image.h" />
     <ClInclude Include="helper\stb\stb_image_write.h" />
+    <ClInclude Include="helper\teapot.h" />
+    <ClInclude Include="helper\teapotdata.h" />
+    <ClInclude Include="helper\torus.h" />
+    <ClInclude Include="helper\trianglemesh.h" />
     <ClInclude Include="scenebasic_uniform.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <Text Include="Dependencies\include\glm\CMakeLists.txt" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

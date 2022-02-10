@@ -7,14 +7,15 @@
 #include "helper/glslprogram.h"
 #include <glm/glm.hpp>
 #include <glm/gtc/matrix_transform.hpp>
+#include "helper/torus.h"
+#include "glm/glm.hpp"
 
 class SceneBasic_Uniform : public Scene
 {
 private:
-    GLuint vaoHandle;
     GLSLProgram prog;
-    float angle;
     glm::mat4 rotationMatrix;
+	Torus torus;
 
     void compile();
 
@@ -25,6 +26,7 @@ public:
     void update( float t );
     void render();
     void resize(int, int);
+	void setMatrices();
 };
 
 #endif // SCENEBASIC_UNIFORM_H

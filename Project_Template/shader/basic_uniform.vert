@@ -7,6 +7,10 @@ out vec3 Color;
 
 uniform mat4 RotationMatrix;
 
+uniform vec4 LightPosition;
+uniform vec4 Kd;
+uniform vec4 Ld;
+
 void main()
 {
     Color = VertexColor;
