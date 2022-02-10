@@ -1,7 +1,8 @@
 #include "scenebasic_uniform.h"
 
 #include "scenebasic_uniform.h"
-#include <glm/gtc/matrix_transform.hpp>
+#include <glm/gtc/matrix_transform.hpp>
+
 #include <cstdio>
 #include <cstdlib>
 
@@ -26,13 +27,18 @@ void SceneBasic_Uniform::initScene()
 	glEnable(GL_DEPTH_TEST);
 
 	model = mat4(1.0f);
+	//model = glm::rotate(model, glm::radians(-225.0f), vec3(0.0f, 1.0f, 0.0f));
+
 	view = glm::lookAt(vec3(0.0f, 0.0f, 2.0f), vec3(0.0f, 0.0f, 0.0f),
 		vec3(0.0f, 1.0f, 0.0f));
 	projection = mat4(1.0f);
 
+	prog.setUniform("Kd", glm::vec3(1.0f));
+
+	prog.setUniform("Ld", glm::vec3(1.0f));
+
 	prog.setUniform("LightPosition", view *
 		glm::vec4(5.0f, 5.0f, 2.0f, 1.0f));
-
 }
 
 void SceneBasic_Uniform::compile()
@@ -66,7 +72,8 @@ void SceneBasic_Uniform::resize(int w, int h)
 	width = w;
 	height = h;
 	projection = glm::perspective(glm::radians(70.0f), (float)w / h,
-		0.3f, 100.0f);
+		0.3f, 100.0f);
+
 }
 
 void SceneBasic_Uniform::setMatrices()
@@ -75,5 +82,5 @@ void SceneBasic_Uniform::setMatrices()
 	prog.setUniform("ModelViewMatrix", mv);
 	prog.setUniform("NormalMatrix", glm::mat3(vec3(mv[0]),
 		vec3(mv[1]), vec3(mv[2])));
-	prog.setUniform("ModelViewMatrix", projection * mv);
+	prog.setUniform("MVP", projection * mv);
 }
