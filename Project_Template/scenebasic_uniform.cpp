@@ -29,7 +29,7 @@ void SceneBasic_Uniform::initScene()
 	model = mat4(1.0f);
 	
 	prog.setUniform("ViewPosition", vec3(0.0f, 0.0f, 2.0f));
-	prog.setUniform("SpecularPowerCoefficient", 2);
+	prog.setUniform("SpecularPowerCoefficient", 10);
 	prog.setUniform("Ks", glm::vec3(1.0f));
 	prog.setUniform("Ls", glm::vec3(1.0f));
 

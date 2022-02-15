@@ -12,7 +12,7 @@ uniform mat4 ModelViewMatrix;
 uniform mat3 NormalMatrix;
 uniform mat4 MVP;
 
-uniform GLuint SpecularPowerCoefficient;
+uniform int SpecularPowerCoefficient;
 uniform vec3 ViewPosition;
 uniform vec3 Ks;
 uniform vec3 Ls;
@@ -29,7 +29,7 @@ void main()
 
 	vec3 r = reflect(-s, n);
 
-	LightIntensity = (Ka * La) + (Kd * Ld * max(dot(s, n), 0.0f)) + (Ks * Ls * pow(r * ViewPosition, SpecularPowerCoefficient));
+	LightIntensity = (Ka * La) + (Kd * Ld * max(dot(s, n), 0.0f)) + (Ks * Ls * pow(r * ViewPosition, vec3(SpecularPowerCoefficient)));
 
     gl_Position = vec4(VertexPosition,1.0) * MVP;
 }
