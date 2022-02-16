@@ -30,8 +30,8 @@ void SceneBasic_Uniform::initScene()
 	
 	prog.setUniform("ViewPosition", vec3(0.0f, 0.0f, 2.0f));
 	prog.setUniform("SpecularPowerCoefficient", 10);
-	prog.setUniform("Ks", glm::vec3(1.0f));
-	prog.setUniform("Ls", glm::vec3(1.0f));
+	prog.setUniform("Ks", glm::vec3(0.1f));
+	prog.setUniform("Ls", glm::vec3(0.02f));
 
 	view = glm::lookAt(vec3(0.0f, 0.0f, 2.0f), vec3(0.0f, 0.0f, 0.0f),
 		vec3(0.0f, 1.0f, 0.0f));

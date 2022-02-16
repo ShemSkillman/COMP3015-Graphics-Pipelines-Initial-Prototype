@@ -29,7 +29,7 @@ void main()
 
 	vec3 r = reflect(-s, n);
 
-	LightIntensity = (Ka * La) + (Kd * Ld * max(dot(s, n), 0.0f)) + (Ks * Ls * pow(r * ViewPosition, vec3(SpecularPowerCoefficient)));
+	LightIntensity = (Ka * La) + (Kd * Ld * max(dot(s, n), 0.0f)) + (Ks * Ls * pow(max(dot(r, ViewPosition), 0.0f), SpecularPowerCoefficient));
 
     gl_Position = vec4(VertexPosition,1.0) * MVP;
 }
