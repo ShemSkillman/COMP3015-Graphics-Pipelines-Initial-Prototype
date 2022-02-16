@@ -19,11 +19,17 @@ uniform vec3 Ls;
 
 out vec3 LightIntensity;
 
+void getNormAndPos(out vec3 n, out vec4 vertexPos)
+{
+	n = normalize(VertexNormal * NormalMatrix);
+	vertexPos = vec4(VertexPosition, 1.0) * ModelViewMatrix;
+}
+
 void main()
 {
-    vec3 n = normalize(VertexNormal * NormalMatrix);
-
-	vec4 vertexPos = vec4(VertexPosition, 1.0) * ModelViewMatrix;
+	vec3 n;
+	vec4 vertexPos;
+	getNormAndPos(n, vertexPos);
 
 	vec3 s = vec3(normalize(LightPosition - vertexPos));
 
