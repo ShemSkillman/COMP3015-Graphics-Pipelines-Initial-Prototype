@@ -17,7 +17,7 @@ uniform vec3 ViewPosition;
 uniform vec3 Ks;
 uniform vec3 Ls;
 
-out vec3 LightIntensity;
+flat out vec3 LightIntensity;
 
 void getNormAndPos(out vec3 n, out vec4 vertexPos)
 {
