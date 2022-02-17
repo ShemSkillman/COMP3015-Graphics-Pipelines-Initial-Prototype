@@ -17,7 +17,7 @@ uniform vec3 ViewPosition;
 uniform vec3 Ks;
 uniform vec3 Ls;
 
-flat out vec3 LightIntensity;
+out vec3 LightIntensity;
 
 void getNormAndPos(out vec3 n, out vec4 vertexPos)
 {
@@ -37,5 +37,5 @@ void main()
 
 	LightIntensity = (Ka * La) + (Kd * Ld * max(dot(s, n), 0.0f)) + (Ks * Ls * pow(max(dot(r, ViewPosition), 0.0f), SpecularPowerCoefficient));
 
-    gl_Position = vec4(VertexPosition,1.0) * MVP;
+    gl_Position =  MVP * vec4(VertexPosition,1.0);
 }
