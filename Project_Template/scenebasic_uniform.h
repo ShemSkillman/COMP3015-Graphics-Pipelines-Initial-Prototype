@@ -7,15 +7,18 @@
 #include "helper/glslprogram.h"
 #include <glm/glm.hpp>
 #include <glm/gtc/matrix_transform.hpp>
-#include "helper/torus.h"
+#include "helper/plane.h"
+#include "helper/objmesh.h"
 #include "glm/glm.hpp"
+#include <sstream>
 
 class SceneBasic_Uniform : public Scene
 {
 private:
     GLSLProgram prog;
     glm::mat4 rotationMatrix;
-	Torus torus;
+    Plane plane;
+    std::unique_ptr<ObjMesh> mesh;
 
     void compile();
 
