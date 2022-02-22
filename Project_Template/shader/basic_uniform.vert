@@ -49,7 +49,9 @@ vec3 phongModel(int light, vec4 vertexPos, vec3 n)
 
 	//calculate specular here
 	vec3 r = reflect(-s, n);
-	vec3 spec = Material.Ks * pow(max(dot(r, ViewPosition), 0.0f), Material.Shininess);
+	vec3 v = normalize(-vertexPos.xyz);
+
+	vec3 spec = Material.Ks * pow(max(dot(r, v), 0.0f), Material.Shininess);
 	 
 	return ambient + lights[light].L * (diffuse + spec);
 }

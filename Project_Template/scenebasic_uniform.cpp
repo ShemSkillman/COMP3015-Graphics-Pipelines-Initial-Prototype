@@ -48,13 +48,13 @@ void SceneBasic_Uniform::initScene()
 			1.0f, 1.0f));
 	}
 
-	prog.setUniform("lights[0].L", vec3(0.0f, 0.0f, 0.8f));
-	prog.setUniform("lights[1].L", vec3(0.0f, 0.8f, 0.0f));
-	prog.setUniform("lights[2].L", vec3(0.8f, 0.0f, 0.0f));
+	prog.setUniform("lights[0].L", vec3(0.8f));
+	prog.setUniform("lights[1].L", vec3(0.4f));
+	prog.setUniform("lights[2].L", vec3(0.6f));
 
-	prog.setUniform("lights[0].La", vec3(0.0f, 0.0f, 0.2f));
-	prog.setUniform("lights[1].La", vec3(0.0f, 0.2f, 0.0f));
-	prog.setUniform("lights[2].La", vec3(0.2f, 0.0f, 0.0f));
+	prog.setUniform("lights[0].La", vec3(0.2f));
+	prog.setUniform("lights[1].La", vec3(0.2f));
+	prog.setUniform("lights[2].La", vec3(0.2f));
 }
 
 void SceneBasic_Uniform::compile()
@@ -72,16 +72,15 @@ void SceneBasic_Uniform::compile()
 
 void SceneBasic_Uniform::update( float t )
 {
-	model = glm::rotate(model, glm::radians(0.001f * t), vec3(0.0f, 1.0f, 0.0f));
 }
 
 void SceneBasic_Uniform::render()
 {
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 	
-	prog.setUniform("Material.Kd", 0.4f, 0.4f, 0.4f);
-	prog.setUniform("Material.Ks", 0.9f, 0.9f, 0.9f);
-	prog.setUniform("Material.Ka", 0.5f, 0.5f, 0.5f);
+	prog.setUniform("Material.Kd", 1.0f, 0.76f, 0.15f);
+	prog.setUniform("Material.Ks", 1.0f, 1.0f, 1.0f);
+	prog.setUniform("Material.Ka", 0.50f, 0.38f, 0.075f);
 	prog.setUniform("Material.Shininess", 180.0f);
 
 	model = mat4(1.0f);
@@ -89,9 +88,9 @@ void SceneBasic_Uniform::render()
 	setMatrices();
 	mesh->render();
 
-	prog.setUniform("Material.Kd", 0.1f, 0.1f, 0.1f);
-	prog.setUniform("Material.Ks", 0.9f, 0.9f, 0.9f);
-	prog.setUniform("Material.Ka", 0.1f, 0.1f, 0.1f);
+	prog.setUniform("Material.Kd", 0.19f, 0.35f, 0.09f);
+	prog.setUniform("Material.Ks", 0.1f, 0.1f, 0.1f);
+	prog.setUniform("Material.Ka", 0.19f, 0.35f, 0.09f);
 	prog.setUniform("Material.Shininess", 180.0f);
 
 	model = mat4(1.0f);
