@@ -39,13 +39,17 @@ void SceneBasic_Uniform::initScene()
 	prog.setUniform("Spot.La", vec3(0.5f));
 	prog.setUniform("Spot.Exponent", 50.0f);
 	prog.setUniform("Spot.Cutoff", glm::radians(15.0f));
+
+	prog.setUniform("Fog.MaxDist", 30.0f);
+	prog.setUniform("Fog.MinDist", 1.0f);
+	prog.setUniform("Fog.Color", vec3(0.5f, 0.5f, 0.5f));
 }
 
 void SceneBasic_Uniform::compile()
 {
 	try {
-		prog.compileShader("shader/toon_shader.vert");
-		prog.compileShader("shader/toon_shader.frag");
+		prog.compileShader("shader/perfragment_shading.vert");
+		prog.compileShader("shader/perfragment_shading.frag");
 		prog.link();
 		prog.use();
 	} catch (GLSLProgramException &e) {
