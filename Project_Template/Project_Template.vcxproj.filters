@@ -67,6 +67,8 @@
     </None>
     <None Include="shader\perfragment_shading.frag" />
     <None Include="shader\perfragment_shading.vert" />
+    <None Include="shader\toon_shader.vert" />
+    <None Include="shader\toon_shader.frag" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="helper\scene.h">

@@ -44,8 +44,8 @@ void SceneBasic_Uniform::initScene()
 void SceneBasic_Uniform::compile()
 {
 	try {
-		prog.compileShader("shader/perfragment_shading.vert");
-		prog.compileShader("shader/perfragment_shading.frag");
+		prog.compileShader("shader/toon_shader.vert");
+		prog.compileShader("shader/toon_shader.frag");
 		prog.link();
 		prog.use();
 	} catch (GLSLProgramException &e) {
