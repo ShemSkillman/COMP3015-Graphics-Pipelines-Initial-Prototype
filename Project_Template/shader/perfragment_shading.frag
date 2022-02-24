@@ -20,13 +20,6 @@ float Exponent; // Angular attenuation exponent
 float Cutoff; // Cutoff angle (between 0 and pi/2)
 } Spot;
 
-uniform struct FogInfo
-{
-float MaxDist; //max distance
-float MinDist; //min distance
-vec3 Color; //colour of the fog
-} Fog;
-
 uniform struct MaterialInfo {
  vec3 Ka; // Ambient reflectivity
  vec3 Kd; // Diffuse reflectivity
