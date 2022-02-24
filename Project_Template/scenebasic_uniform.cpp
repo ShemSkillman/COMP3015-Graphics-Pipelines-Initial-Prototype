@@ -30,12 +30,14 @@ void SceneBasic_Uniform::initScene()
 	glEnable(GL_DEPTH_TEST);
 
 	model = mat4(1.0f);
+	
+	prog.setUniform("ViewPosition", vec3(0.5f, 0.75f, 0.75f));
 
 	view = glm::lookAt(vec3(0.5f, 0.75f, 0.75f), vec3(0.0f, 0.0f, 0.0f),
 		vec3(0.0f, 1.0f, 0.0f));
 	projection = mat4(1.0f);
 
-	/*float x, z;
+	float x, z;
 	for (int i = 0; i < 3; i++)
 	{
 		std::stringstream name;
@@ -44,20 +46,22 @@ void SceneBasic_Uniform::initScene()
 		z = 2.0f * sinf((glm::two_pi<float>() / 3) * i);
 		prog.setUniform(name.str().c_str(), view * glm::vec4(x, 1.2f, z +
 			1.0f, 1.0f));
-	}*/
+	}
 
-	prog.setUniform("Light", view * glm::vec4(2.0f, 1.2f, 3.0f, 1.0f));
+	prog.setUniform("lights[0].L", vec3(0.8f));
+	prog.setUniform("lights[1].L", vec3(0.4f));
+	prog.setUniform("lights[2].L", vec3(0.6f));
 
-	prog.setUniform("Light.L", vec3(0.8f));
-
-	prog.setUniform("Light.La", vec3(0.2f));
+	prog.setUniform("lights[0].La", vec3(0.2f));
+	prog.setUniform("lights[1].La", vec3(0.2f));
+	prog.setUniform("lights[2].La", vec3(0.2f));
 }
 
 void SceneBasic_Uniform::compile()
 {
 	try {
-		prog.compileShader("shader/perfragment_shading.vert");
-		prog.compileShader("shader/perfragment_shading.frag");
+		prog.compileShader("shader/basic_uniform.vert");
+		prog.compileShader("shader/basic_uniform.frag");
 		prog.link();
 		prog.use();
 	} catch (GLSLProgramException &e) {
