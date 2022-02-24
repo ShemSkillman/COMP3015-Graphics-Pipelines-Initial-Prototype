@@ -35,7 +35,7 @@ uniform struct MaterialInfo {
 } Material;
 
 
-vec3 blinnPhong(vec4 vertexPos, vec3 n)
+vec3 phongModel(vec4 vertexPos, vec3 n)
 {
 	//calculate ambient here
 	vec3 ambient = Material.Ka * Light.La;
@@ -83,17 +83,5 @@ vec3 blinnPhongSpot(vec3 position, vec3 n)
 
 void main()
 {
-	float dist = abs(Position.z); //distance calculations
-
-	//fogFactor calculation based on the formula presented earlier
-	float fogFactor = (Fog.MaxDist - dist) / (Fog.MaxDist - Fog.MinDist);
-	fogFactor = clamp( fogFactor, 0.0, 1.0 ); //we clamp values
-
-	//colour we receive from blinnPhong calculation
-	vec3 shadeColor = blinnPhongSpot(Position, normalize(Normal));
-
-	//we assign a colour based on the fogFactor using mix
-	vec3 color = mix( Fog.Color, shadeColor, fogFactor );
-
-	FragColor = color; //final colour
+	FragColor = blinnPhongSpot(Position, Normal);
 }
