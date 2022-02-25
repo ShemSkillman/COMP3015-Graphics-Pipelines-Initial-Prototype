@@ -65,6 +65,8 @@
     <None Include="shader\basic_uniform.vert">
       <Filter>shaders</Filter>
     </None>
+    <None Include="shader\toon_shader.vert" />
+    <None Include="shader\toon_shader.frag" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="helper\scene.h">

@@ -24,6 +24,9 @@ private:
 	Torus torus;
     std::unique_ptr<ObjMesh> mesh;
 
+	float tPrev;
+	float angle;
+
     void compile();
 
 public:

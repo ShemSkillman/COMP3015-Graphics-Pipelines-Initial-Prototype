@@ -37,13 +37,16 @@ void SceneBasic_Uniform::initScene()
 	prog.setUniform("Spot.La", vec3(0.5f));
 	prog.setUniform("Spot.Exponent", 50.0f);
 	prog.setUniform("Spot.Cutoff", glm::radians(15.0f));
+
+	tPrev = 0.0f;
+	angle = 0.0f;
 }
 
 void SceneBasic_Uniform::compile()
 {
 	try {
-		prog.compileShader("shader/basic_uniform.vert");
-		prog.compileShader("shader/basic_uniform.frag");
+		prog.compileShader("shader/toon_shader.vert");
+		prog.compileShader("shader/toon_shader.frag");
 		prog.link();
 		prog.use();
 	} catch (GLSLProgramException &e) {
@@ -54,14 +57,25 @@ void SceneBasic_Uniform::compile()
 
 void SceneBasic_Uniform::update( float t )
 {
+	float deltaT = t - tPrev;
+	if (tPrev == 0.0f)
+		deltaT = 0.0f;
+
+	tPrev = t;
+	angle += 0.25f * deltaT;
+	if (angle > glm::two_pi<float>())
+	{
+		angle -= glm::two_pi<float>();
+	}
 }
 
 void SceneBasic_Uniform::render()
 {
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-	vec4 lightPos = vec4(0.0f, 10.0f, 0.0f, 1.0f);
+	vec4 lightPos = vec4(10.0f * cos(angle), 10.0f, 10.0f * sin(angle), 1.0f);
 	prog.setUniform("Spot.Position", view * lightPos);
+
 	mat3 normalMatrix = mat3(vec3(view[0]), vec3(view[1]), vec3(view[2]));
 
 	prog.setUniform("Spot.Direction", normalMatrix * vec3(-lightPos));
