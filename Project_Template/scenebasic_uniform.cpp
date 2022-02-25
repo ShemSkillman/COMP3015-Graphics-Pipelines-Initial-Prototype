@@ -40,13 +40,17 @@ void SceneBasic_Uniform::initScene()
 
 	tPrev = 0.0f;
 	angle = 0.0f;
+
+	prog.setUniform("Fog.MaxDist", 15.0f);
+	prog.setUniform("Fog.MinDist", 1.0f);
+	prog.setUniform("Fog.Color", vec3(0.5f, 0.5f, 0.5f));
 }
 
 void SceneBasic_Uniform::compile()
 {
 	try {
-		prog.compileShader("shader/toon_shader.vert");
-		prog.compileShader("shader/toon_shader.frag");
+		prog.compileShader("shader/basic_uniform.vert");
+		prog.compileShader("shader/basic_uniform.frag");
 		prog.link();
 		prog.use();
 	} catch (GLSLProgramException &e) {
