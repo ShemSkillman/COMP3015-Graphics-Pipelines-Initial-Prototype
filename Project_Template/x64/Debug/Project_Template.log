@@ -1,2 +1,15 @@
-﻿  scenebasic_uniform.cpp
+﻿  glad.c
+  glslprogram.cpp
+  glutils.cpp
+  objmesh.cpp
+C:\Users\sskillman\Documents\GitHub\COMP3015-practicals\Project_Template\helper\objmesh.cpp(188,43): warning C4267:  '+=': conversion from 'size_t' to 'int', possible loss of data
+C:\Users\sskillman\Documents\GitHub\COMP3015-practicals\Project_Template\helper\objmesh.cpp(194,50): warning C4267:  '+=': conversion from 'size_t' to 'int', possible loss of data
+  plane.cpp
+  teapot.cpp
+  torus.cpp
+  trianglemesh.cpp
+  main.cpp
+  scenebasic_uniform.cpp
+  Generating Code...
+C:\Users\sskillman\Documents\GitHub\COMP3015-practicals\Project_Template\helper\objmesh.cpp(198,45): warning C4267:  '+=': conversion from 'size_t' to 'int', possible loss of data
   Project_Template.vcxproj -> C:\Users\sskillman\Documents\GitHub\COMP3015-practicals\Project_Template\x64\Debug\Project_Template.exe
