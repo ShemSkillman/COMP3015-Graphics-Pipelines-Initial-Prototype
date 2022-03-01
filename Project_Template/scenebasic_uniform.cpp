@@ -1,6 +1,5 @@
 #include "scenebasic_uniform.h"
 
-#include "scenebasic_uniform.h"
 #include <glm/gtc/matrix_transform.hpp>
 
 #include <cstdio>
