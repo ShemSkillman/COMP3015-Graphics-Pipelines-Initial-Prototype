@@ -76,6 +76,8 @@
     </None>
     <None Include="shader\toon_shader.vert" />
     <None Include="shader\toon_shader.frag" />
+    <None Include="shader\texture_shader.vert" />
+    <None Include="shader\texture_shader.frag" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="helper\scene.h">

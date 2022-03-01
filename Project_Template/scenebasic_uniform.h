@@ -13,6 +13,7 @@
 #include "helper/objmesh.h"
 #include "glm/glm.hpp"
 #include <sstream>
+#include "helper/cube.h"
 
 class SceneBasic_Uniform : public Scene
 {
@@ -23,6 +24,7 @@ private:
 	Teapot teapot;
 	Torus torus;
     std::unique_ptr<ObjMesh> mesh;
+	Cube cube;
 
 	float tPrev;
 	float angle;
