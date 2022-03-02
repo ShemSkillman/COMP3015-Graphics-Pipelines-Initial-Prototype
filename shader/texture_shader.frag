@@ -4,8 +4,8 @@ layout (location = 0) in vec4 Position;
 layout (location = 1) in vec3 Normal;
 layout (location = 2) in vec2 TexCoord;
 
-layout (binding = 0) uniform sampler2D BaseTex;
-layout (binding = 1) uniform sampler2D AlphaTex;
+layout(binding=0) uniform sampler2D BaseTex;
+layout(binding=1) uniform sampler2D AlphaTex;
 
 layout (location = 0) out vec4 FragColor;
 
@@ -38,10 +38,12 @@ float MinDist; //min distance
 vec3 Color; //colour of the fog
 } Fog;
 
+uniform bool Discard;
+
 vec4 blinnPhong(int light, vec4 vertexPos, vec3 n)
 {
-    vec3 baseTexColor = texture(BaseTex, TexCoord).rgb;
-	vec4 alphaTexColor = texture(AlphaTex, TexCoord).rgba;
+    vec4 baseTexColor = texture(BaseTex, TexCoord);
+	vec4 alphaTexColor = texture(AlphaTex, TexCoord);
 
 	vec3 texColour = mix(baseTexColor.rgb, alphaTexColor.rgb, alphaTexColor.a);
 
@@ -64,10 +66,11 @@ vec4 blinnPhong(int light, vec4 vertexPos, vec3 n)
 
 vec3 blinnPhongSpot(vec4 vertexPos, vec3 n)
 {
-    vec3 baseTexColor = texture(BaseTex, TexCoord).rgb;
-	vec4 alphaTexColor = texture(AlphaTex, TexCoord).rgba;
+    vec4 baseTexColor = texture(BaseTex, TexCoord);
+	vec4 alphaTexColor = texture(AlphaTex, TexCoord);
 
 	vec3 texColour = mix(baseTexColor.rgb, alphaTexColor.rgb, alphaTexColor.a);
+	//vec3 texColour = baseTexColor.rgb;
 
 	vec3 ambient = texColour * Spot.La; //calculate ambient
 	vec3 s = vec3(normalize(Spot.Position - vertexPos));
@@ -101,18 +104,34 @@ void main()
 	float fogFactor = (Fog.MaxDist - dist) / (Fog.MaxDist - Fog.MinDist);
 	fogFactor = clamp(fogFactor, 0.0, 1.0); //we clamp values
 
-	vec4 alphaMap = texture(AlphaTex, TexCoord).rgba;
-	vec3 shadeColor = vec3(0.0f);
-	if(alphaMap.a < 0.15)
+	if (Discard)
 	{
-		discard;
+		vec4 alphaMap = texture(AlphaTex, TexCoord).rgba;
+		if(alphaMap.a < 0.15)
+		{
+			discard;
+		}
+		else
+		{
+			vec3 shadeColor;
+			if (gl_FrontFacing)
+			{
+				shadeColor = blinnPhongSpot(Position, normalize(Normal));	
+			}
+			else
+			{
+				shadeColor = blinnPhongSpot(Position, normalize(-Normal));
+			}
+
+			// we assign a colour based on the fogFactor using mix
+			vec3 color = mix(Fog.Color, shadeColor, fogFactor);
+			FragColor = vec4(color, 1.0); // final colour	
+		}
 	}
 	else
 	{
-		shadeColor = blinnPhongSpot(Position, normalize(Normal));	
+		vec3 shadeColor = blinnPhongSpot(Position, normalize(Normal));
+		vec3 color = mix(Fog.Color, shadeColor, fogFactor);
+		FragColor = vec4(color, 1.0); // final colour
 	}
-
-	//we assign a colour based on the fogFactor using mix
-	vec3 color = mix(Fog.Color, shadeColor, fogFactor);
-	FragColor = vec4(color, 1.0); //final colour	
 }
