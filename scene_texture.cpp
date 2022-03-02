@@ -44,10 +44,16 @@ void Scene_Texture::initScene()
 	prog.setUniform("Fog.MinDist", 1.0f);
 	prog.setUniform("Fog.Color", vec3(0.5f, 0.5f, 0.5f));
 
-	GLuint texID =
+	GLuint brickTexID =
 		Texture::loadTexture("media/texture/brick1.jpg");
 	glActiveTexture(GL_TEXTURE0);
-	glBindTexture(GL_TEXTURE_2D, texID);
+	glBindTexture(GL_TEXTURE_2D, brickTexID);
+
+	GLuint mossTexID =
+		Texture::loadTexture("media/texture/moss.png");
+	// Load moss texture file into channel 1
+	glActiveTexture(GL_TEXTURE1);
+	glBindTexture(GL_TEXTURE_2D, mossTexID);
 }
 
 void Scene_Texture::compile()

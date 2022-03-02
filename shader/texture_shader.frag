@@ -4,7 +4,8 @@ layout (location = 0) in vec4 Position;
 layout (location = 1) in vec3 Normal;
 layout (location = 2) in vec2 TexCoord;
 
-layout (binding = 0) uniform sampler2D Tex1;
+layout (binding = 0) uniform sampler2D BrickTex;
+layout (binding = 1) uniform sampler2D MossTex;
 
 layout (location = 0) out vec4 FragColor;
 
@@ -39,7 +40,10 @@ vec3 Color; //colour of the fog
 
 vec4 blinnPhong(int light, vec4 vertexPos, vec3 n)
 {
-	vec3 texColour = texture(Tex1, TexCoord).rgb;
+    vec3 brickTexColor = texture(BrickTex, TexCoord).rgb;
+	vec4 mossTexColor = texture(BrickTex, TexCoord).rgba;
+
+	vec3 texColour = mix(brickTexColor.rgb, mossTexColor.rgb, mossTexColor.a);
 
 	//calculate ambient here
 	vec3 ambient = texColour * lights[light].La;
@@ -60,7 +64,10 @@ vec4 blinnPhong(int light, vec4 vertexPos, vec3 n)
 
 vec3 blinnPhongSpot(vec4 vertexPos, vec3 n)
 {
-    vec3 texColour = texture(Tex1, TexCoord).rgb;
+    vec3 brickTexColor = texture(BrickTex, TexCoord).rgb;
+	vec4 mossTexColor = texture(BrickTex, TexCoord).rgba;
+
+	vec3 texColour = mix(brickTexColor.rgb, mossTexColor.rgb, mossTexColor.a);
 
 	vec3 ambient = texColour * Spot.La; //calculate ambient
 	vec3 s = vec3(normalize(Spot.Position - vertexPos));
