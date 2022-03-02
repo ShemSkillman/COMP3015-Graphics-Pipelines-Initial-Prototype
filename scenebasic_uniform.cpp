@@ -56,8 +56,6 @@ void SceneBasic_Uniform::initScene()
 	prog.setUniform("Fog.MaxDist", 30.0f);
 	prog.setUniform("Fog.MinDist", 1.0f);
 	prog.setUniform("Fog.Color", vec3(0.5f, 0.5f, 0.5f));
-
-
 }
 
 void SceneBasic_Uniform::compile()

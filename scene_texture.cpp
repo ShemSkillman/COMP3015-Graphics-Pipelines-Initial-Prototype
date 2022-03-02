@@ -22,7 +22,8 @@ using glm::mat3;
 
 Scene_Texture::Scene_Texture() : plane(50.0f, 50.0f, 1, 1), teapot(14, glm::mat4(1.0f)), torus(1.75f * 0.75f, 0.75f * 0.75f, 50, 50), cube(1.0f)
 {
-	mesh = ObjMesh::load("../Project_Template/media/pig_triangulated.obj", true);
+	tPrev = 0.0f;
+	angle = 0.0f;
 }
 
 void Scene_Texture::initScene()
@@ -39,15 +40,12 @@ void Scene_Texture::initScene()
 	prog.setUniform("Spot.Exponent", 50.0f);
 	prog.setUniform("Spot.Cutoff", glm::radians(15.0f));
 
-	tPrev = 0.0f;
-	angle = 0.0f;
-
 	prog.setUniform("Fog.MaxDist", 30.0f);
 	prog.setUniform("Fog.MinDist", 1.0f);
 	prog.setUniform("Fog.Color", vec3(0.5f, 0.5f, 0.5f));
 
 	GLuint texID =
-		Texture::loadTexture("../Project_Template/media/texture/brick1.jpg");
+		Texture::loadTexture("media/texture/brick1.jpg");
 	glActiveTexture(GL_TEXTURE0);
 	glBindTexture(GL_TEXTURE_2D, texID);
 }

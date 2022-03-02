@@ -23,7 +23,6 @@ private:
     Plane plane;
 	Teapot teapot;
 	Torus torus;
-    std::unique_ptr<ObjMesh> mesh;
 	Cube cube;
 
 	float tPrev;

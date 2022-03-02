@@ -11,7 +11,7 @@ int main(int argc, char* argv[])
 
 	std::unique_ptr<Scene> scene;
 
-	scene = std::unique_ptr<Scene>(new SceneBasic_Uniform());
+	scene = std::unique_ptr<Scene>(new Scene_Texture());
 
 	return runner.run(*scene);
 }
