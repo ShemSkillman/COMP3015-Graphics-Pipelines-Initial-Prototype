@@ -20,12 +20,12 @@ using glm::mat4;
 using glm::vec4;
 using glm::mat3;
 
-SceneBasic_Uniform::SceneBasic_Uniform() : plane(50.0f, 50.0f, 1, 1), teapot(14, glm::mat4(1.0f)), torus(1.75f * 0.75f, 0.75f * 0.75f, 50, 50), cube(1.0f)
+Scene_Texture::Scene_Texture() : plane(50.0f, 50.0f, 1, 1), teapot(14, glm::mat4(1.0f)), torus(1.75f * 0.75f, 0.75f * 0.75f, 50, 50), cube(1.0f)
 {
 	mesh = ObjMesh::load("../Project_Template/media/pig_triangulated.obj", true);
 }
 
-void SceneBasic_Uniform::initScene()
+void Scene_Texture::initScene()
 {
 	compile();
 	glEnable(GL_DEPTH_TEST);
@@ -52,7 +52,7 @@ void SceneBasic_Uniform::initScene()
 	glBindTexture(GL_TEXTURE_2D, texID);
 }
 
-void SceneBasic_Uniform::compile()
+void Scene_Texture::compile()
 {
 	try {
 		prog.compileShader("shader/texture_shader.vert");
@@ -65,7 +65,7 @@ void SceneBasic_Uniform::compile()
 	}
 }
 
-void SceneBasic_Uniform::update( float t )
+void Scene_Texture::update( float t )
 {
 	float deltaT = t - tPrev;
 	if (tPrev == 0.0f)
@@ -79,7 +79,7 @@ void SceneBasic_Uniform::update( float t )
 	}
 }
 
-void SceneBasic_Uniform::render()
+void Scene_Texture::render()
 {
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
@@ -137,7 +137,7 @@ void SceneBasic_Uniform::render()
 	plane.render();
 }
 
-void SceneBasic_Uniform::resize(int w, int h)
+void Scene_Texture::resize(int w, int h)
 {
 	glViewport(0, 0, w, h);
 	width = w;
@@ -147,7 +147,7 @@ void SceneBasic_Uniform::resize(int w, int h)
 
 }
 
-void SceneBasic_Uniform::setMatrices()
+void Scene_Texture::setMatrices()
 {
 	mat4 mv = view * model;
 	prog.setUniform("ModelViewMatrix", mv);

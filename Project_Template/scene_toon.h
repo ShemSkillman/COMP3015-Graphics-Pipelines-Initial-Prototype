@@ -1,5 +1,5 @@
-#ifndef SCENEBASIC_UNIFORM_H
-#define SCENEBASIC_UNIFORM_H
+#ifndef SCENE_TOON_H
+#define SCENE_TOON_H
 
 #include "helper/scene.h"
 
@@ -23,7 +23,6 @@ private:
     Plane plane;
 	Teapot teapot;
 	Torus torus;
-    std::unique_ptr<ObjMesh> mesh;
 	Cube cube;
 
 	float tPrev;
@@ -41,4 +40,4 @@ public:
 	void setMatrices();
 };
 
-#endif // SCENEBASIC_UNIFORM_H
+#endif // SCENE_TOON_H

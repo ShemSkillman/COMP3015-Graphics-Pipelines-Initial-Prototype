@@ -1,16 +1,2 @@
-﻿  cube.cpp
-  stb_image.cpp
-  texture.cpp
-  Generating Code...
-  LINK : C:\Users\sskillman\Documents\GitHub\COMP3015-practicals\Project_Template\x64\Debug\Project_Template.exe not found or not built by the last incremental link; performing full link
-scenebasic_uniform.obj : warning LNK4204: '' is missing debugging information for referencing module; linking object as if no debug info
-main.obj : warning LNK4204: '' is missing debugging information for referencing module; linking object as if no debug info
-trianglemesh.obj : warning LNK4204: '' is missing debugging information for referencing module; linking object as if no debug info
-torus.obj : warning LNK4204: '' is missing debugging information for referencing module; linking object as if no debug info
-teapot.obj : warning LNK4204: '' is missing debugging information for referencing module; linking object as if no debug info
-plane.obj : warning LNK4204: '' is missing debugging information for referencing module; linking object as if no debug info
-objmesh.obj : warning LNK4204: '' is missing debugging information for referencing module; linking object as if no debug info
-glutils.obj : warning LNK4204: '' is missing debugging information for referencing module; linking object as if no debug info
-glslprogram.obj : warning LNK4204: '' is missing debugging information for referencing module; linking object as if no debug info
-glad.obj : warning LNK4204: '' is missing debugging information for referencing module; linking object as if no debug info
+﻿  main.cpp
   Project_Template.vcxproj -> C:\Users\sskillman\Documents\GitHub\COMP3015-practicals\Project_Template\x64\Debug\Project_Template.exe

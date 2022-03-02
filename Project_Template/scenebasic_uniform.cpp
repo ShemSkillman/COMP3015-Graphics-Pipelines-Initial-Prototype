@@ -45,18 +45,13 @@ void SceneBasic_Uniform::initScene()
 	prog.setUniform("Fog.MaxDist", 30.0f);
 	prog.setUniform("Fog.MinDist", 1.0f);
 	prog.setUniform("Fog.Color", vec3(0.5f, 0.5f, 0.5f));
-
-	GLuint texID =
-		Texture::loadTexture("../Project_Template/media/texture/brick1.jpg");
-	glActiveTexture(GL_TEXTURE0);
-	glBindTexture(GL_TEXTURE_2D, texID);
 }
 
 void SceneBasic_Uniform::compile()
 {
 	try {
-		prog.compileShader("shader/texture_shader.vert");
-		prog.compileShader("shader/texture_shader.frag");
+		prog.compileShader("shader/basic_uniform.vert");
+		prog.compileShader("shader/basic_uniform.frag");
 		prog.link();
 		prog.use();
 	} catch (GLSLProgramException &e) {

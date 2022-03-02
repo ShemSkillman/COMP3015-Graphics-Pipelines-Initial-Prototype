@@ -1,6 +1,8 @@
 #include "helper/scene.h"
 #include "helper/scenerunner.h"
 #include "scenebasic_uniform.h"
+#include "scene_texture.h"
+#include "scene_toon.h"
 
 
 int main(int argc, char* argv[])

@@ -44,11 +44,6 @@ void Scene_Toon::initScene()
 	prog.setUniform("Fog.MaxDist", 30.0f);
 	prog.setUniform("Fog.MinDist", 1.0f);
 	prog.setUniform("Fog.Color", vec3(0.5f, 0.5f, 0.5f));
-
-	GLuint texID =
-		Texture::loadTexture("../Project_Template/media/texture/brick1.jpg");
-	glActiveTexture(GL_TEXTURE0);
-	glBindTexture(GL_TEXTURE_2D, texID);
 }
 
 void Scene_Toon::compile()

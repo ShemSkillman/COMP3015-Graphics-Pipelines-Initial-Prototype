@@ -1,5 +1,5 @@
-#ifndef SCENEBASIC_UNIFORM_H
-#define SCENEBASIC_UNIFORM_H
+#ifndef SCENE_TEXTURE_H
+#define SCENE_TEXTURE_H
 
 #include "helper/scene.h"
 
@@ -15,7 +15,7 @@
 #include <sstream>
 #include "helper/cube.h"
 
-class SceneBasic_Uniform : public Scene
+class Scene_Texture : public Scene
 {
 private:
     GLSLProgram prog;
@@ -32,7 +32,7 @@ private:
     void compile();
 
 public:
-    SceneBasic_Uniform();
+	Scene_Texture();
 
     void initScene();
     void update( float t );
@@ -41,4 +41,4 @@ public:
 	void setMatrices();
 };
 
-#endif // SCENEBASIC_UNIFORM_H
+#endif // SCENE_TEXTURE_H
