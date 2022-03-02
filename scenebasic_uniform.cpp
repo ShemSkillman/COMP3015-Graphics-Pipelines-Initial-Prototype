@@ -22,7 +22,7 @@ using glm::mat3;
 
 SceneBasic_Uniform::SceneBasic_Uniform() : plane(50.0f, 50.0f, 1, 1), teapot(14, glm::mat4(1.0f)), torus(1.75f * 0.75f, 0.75f * 0.75f, 50, 50), cube(1.0f)
 {
-	mesh = ObjMesh::load("../Project_Template/media/pig_triangulated.obj", true);
+	mesh = ObjMesh::load("../COMP3015-Graphics-Pipelines-Initial-Prototype/media/pig_triangulated.obj", true);
 }
 
 void SceneBasic_Uniform::initScene()
