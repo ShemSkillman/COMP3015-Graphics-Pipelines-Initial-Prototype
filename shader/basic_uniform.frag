@@ -88,9 +88,13 @@ void main()
 	fogFactor = clamp(fogFactor, 0.0, 1.0); //we clamp values
 
 	//colour we receive from blinnPhong calculation
-	vec3 shadeColor = blinnPhongSpot(Position, normalize(Normal));
+	vec4 shadeColor = vec4(0.0f);
+	for (int i = 0; i < 3; i++)
+	{
+	 shadeColor += blinnPhong(i, Position, normalize(Normal));
+	}
 
 	//we assign a colour based on the fogFactor using mix
-	vec3 color = mix(Fog.Color, shadeColor, fogFactor);
+	vec3 color = mix(Fog.Color, shadeColor.xyz, fogFactor);
 	FragColor = vec4(color, 1.0); //final colour
 }
