@@ -87,9 +87,7 @@ void Scene_Texture::render()
 	mat3 normalMatrix = mat3(vec3(view[0]), vec3(view[1]), vec3(view[2]));
 
 	prog.setUniform("Spot.Direction", normalMatrix * vec3(-lightPos));
-	prog.setUniform("Material.Kd", 0.2f, 0.55f, 0.9f);
 	prog.setUniform("Material.Ks", 0.95f, 0.95f, 0.95f);
-	prog.setUniform("Material.Ka", 0.2f * 0.3f, 0.55f * 0.3f, 0.9f * 0.3f);
 	prog.setUniform("Material.Shininess", 100.0f);
 
 	model = mat4(1.0f);
@@ -100,9 +98,7 @@ void Scene_Texture::render()
 	setMatrices();
 	teapot.render();
 
-	prog.setUniform("Material.Kd", 0.2f, 0.55f, 0.9f);
 	prog.setUniform("Material.Ks", 0.95f, 0.95f, 0.95f);
-	prog.setUniform("Material.Ka", 0.2f * 0.3f, 0.55f * 0.3f, 0.9f * 0.3f);
 	prog.setUniform("Material.Shininess", 100.0f);
 
 	model = mat4(1.0f);
@@ -112,9 +108,7 @@ void Scene_Texture::render()
 	setMatrices();
 	torus.render();
 
-	prog.setUniform("Material.Kd", 0.2f, 0.55f, 0.9f);
 	prog.setUniform("Material.Ks", 0.95f, 0.95f, 0.95f);
-	prog.setUniform("Material.Ka", 0.2f * 0.3f, 0.55f * 0.3f, 0.9f * 0.3f);
 	prog.setUniform("Material.Shininess", 100.0f);
 
 	model = mat4(1.0f);
@@ -124,9 +118,7 @@ void Scene_Texture::render()
 	setMatrices();
 	cube.render();
 
-	prog.setUniform("Material.Kd", 0.7f, 0.7f, 0.7f);
 	prog.setUniform("Material.Ks", 0.9f, 0.9f, 0.9f);
-	prog.setUniform("Material.Ka", 0.2f, 0.2f, 0.2f);
 	prog.setUniform("Material.Shininess", 180.0f);
 
 	model = mat4(1.0f);
