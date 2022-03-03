@@ -1,10 +1,8 @@
 #version 430
 
-layout (location = 0) in vec4 Position;
-layout (location = 1) in vec3 Normal;
-layout (location = 2) in vec2 TexCoord;
-layout (location = 3) in vec3 LightDir;
-layout (location = 4) in vec3 ViewDir;
+layout (location = 0) in vec2 TexCoord;
+layout (location = 1) in vec3 LightDir;
+layout (location = 2) in vec3 ViewDir;
 
 layout(binding=0) uniform sampler2D ColorTex;
 layout(binding=1) uniform sampler2D NormalMapTex;
@@ -23,7 +21,7 @@ uniform struct MaterialInfo {
 } Material;
 
 
-vec4 blinnPhong(vec4 vertexPos, vec3 n)
+vec4 blinnPhong(vec3 n)
 {
 	vec3 texColour = texture(ColorTex, TexCoord).xyz;
 
@@ -47,6 +45,6 @@ void main()
 	vec3 norm = texture(NormalMapTex, TexCoord).xyz;
 	norm.xy = 2.0 * norm.xy - 1.0;
 
-	vec4 shadeColor = blinnPhong(Position, normalize(norm));
+	vec4 shadeColor = blinnPhong(normalize(norm));
 	FragColor = shadeColor; // final colour
 }

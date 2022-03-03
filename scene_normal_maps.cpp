@@ -35,8 +35,8 @@ void Scene_Normal_Maps::initScene()
 	projection = mat4(1.0f);
 
 	prog.setUniform("Light.Position", view * glm::vec4(5.0f, 5.2f, 5.0f, 1.0f));
-	prog.setUniform("Light.L", vec3(0.2f));
-	prog.setUniform("Light.La", vec3(0.05f));
+	prog.setUniform("Light.L", vec3(0.8f));
+	prog.setUniform("Light.La", vec3(0.2f));
 
 	//Load all textures first before binding to avoid strange results!
 
