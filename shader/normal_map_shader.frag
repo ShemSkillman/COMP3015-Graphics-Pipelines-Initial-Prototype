@@ -15,23 +15,20 @@ uniform struct LightInfo {
  vec4 Position; // Light position in eye coords.
  vec3 La; // Ambient light intensity
  vec3 L; // Diffuse and specular light intensity
-} lights[3];
+} Light;
 
 uniform struct MaterialInfo {
- vec3 Ka; // Ambient reflectivity
- vec3 Kd; // Diffuse reflectivity
  vec3 Ks; // Specular reflectivity
  float Shininess; // Specular shininess factor
 } Material;
 
-uniform bool Discard;
 
-vec4 blinnPhong(int light, vec4 vertexPos, vec3 n)
+vec4 blinnPhong(vec4 vertexPos, vec3 n)
 {
 	vec3 texColour = texture(ColorTex, TexCoord).xyz;
 
 	//calculate ambient here
-	vec3 ambient = texColour * lights[light].La;
+	vec3 ambient = texColour * Light.La;
 
 	//calculate diffuse here
 	float sDotN = max(dot(LightDir, n), 0.0f);
@@ -42,7 +39,7 @@ vec4 blinnPhong(int light, vec4 vertexPos, vec3 n)
 
 	vec3 spec = Material.Ks * pow(max(dot(h, n), 0.0f), Material.Shininess);
 	 
-	return vec4(ambient + lights[light].L * (diffuse + spec), 1.0);
+	return vec4(ambient + Light.L * (diffuse + spec), 1.0);
 }
 
 void main()
@@ -50,11 +47,6 @@ void main()
 	vec3 norm = texture(NormalMapTex, TexCoord).xyz;
 	norm.xy = 2.0 * norm.xy - 1.0;
 
-	vec4 shadeColor = vec4(0.0f);
-	for (int i = 0; i < 3; i++)
-	{
-	 shadeColor += blinnPhong(i, Position, normalize(norm));
-	}
-
+	vec4 shadeColor = blinnPhong(Position, normalize(norm));
 	FragColor = shadeColor; // final colour
 }

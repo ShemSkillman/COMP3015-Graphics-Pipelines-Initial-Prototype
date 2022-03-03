@@ -30,8 +30,7 @@ void SceneBasic_Uniform::initScene()
 	compile();
 	glEnable(GL_DEPTH_TEST);
 
-	view = glm::lookAt(vec3(5.0f, 5.0f, 7.5f), vec3(0.0f, 0.75f, 0.0f), vec3(0.0f,
-		1.0f, 0.0f));
+	view = glm::lookAt(vec3(5.0f, 5.0f, 7.5f), vec3(0.0f, 0.75f, 0.0f), vec3(0.0f, 1.0f, 0.0f));
 	projection = mat4(1.0f);
 
 	float x, z;

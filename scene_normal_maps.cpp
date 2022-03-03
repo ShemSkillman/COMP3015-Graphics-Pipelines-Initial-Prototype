@@ -30,28 +30,13 @@ void Scene_Normal_Maps::initScene()
 	compile();
 	glEnable(GL_DEPTH_TEST);
 
-	view = glm::lookAt(vec3(-1.0f, 0.25f, 2.0f), vec3(0.0f, 0.0f, 0.0f),
+	view = glm::lookAt(vec3(-1.0f, 0.25f, 1.0f), vec3(0.0f, 0.0f, 0.0f),
 		vec3(0.0f, 1.0f, 0.0f));
 	projection = mat4(1.0f);
 
-	float x, z;
-	for (int i = 0; i < 3; i++)
-	{
-		std::stringstream name;
-		name << "lights[" << i << "].Position";
-		x = 2.0f * cosf((glm::two_pi<float>() / 3) * i);
-		z = 2.0f * sinf((glm::two_pi<float>() / 3) * i);
-		prog.setUniform(name.str().c_str(), view * glm::vec4(x, 2.2f, z +
-			1.0f, 1.0f));
-	}
-
-	prog.setUniform("lights[0].L", vec3(0.8f));
-	prog.setUniform("lights[1].L", vec3(0.4f));
-	prog.setUniform("lights[2].L", vec3(0.6f));
-
-	prog.setUniform("lights[0].La", vec3(0.2f));
-	prog.setUniform("lights[1].La", vec3(0.2f));
-	prog.setUniform("lights[2].La", vec3(0.2f));
+	prog.setUniform("Light.Position", view * glm::vec4(5.0f, 5.2f, 5.0f, 1.0f));
+	prog.setUniform("Light.L", vec3(0.2f));
+	prog.setUniform("Light.La", vec3(0.05f));
 
 	//Load all textures first before binding to avoid strange results!
 
@@ -83,20 +68,17 @@ void Scene_Normal_Maps::compile()
 
 void Scene_Normal_Maps::update( float t )
 {
+	model = mat4(1.0f);
+	model = glm::rotate(model, glm::radians(50.0f * t), glm::vec3(0, 1, 0));
 }
 
 void Scene_Normal_Maps::render()
 {
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-	prog.setUniform("Material.Kd", 1.0f, 0.76f, 0.15f);
 	prog.setUniform("Material.Ks", 1.0f, 1.0f, 1.0f);
-	prog.setUniform("Material.Ka", 0.50f, 0.38f, 0.075f);
 	prog.setUniform("Material.Shininess", 180.0f);
 
-	model = mat4(1.0f);
-	model = glm::translate(model, vec3(3.0f, 0.75f, 3.0f));
-	model = glm::rotate(model, glm::radians(90.0f), vec3(0.0f, 1.0f, 0.0f));
 	setMatrices();
 
 	ogre->render();

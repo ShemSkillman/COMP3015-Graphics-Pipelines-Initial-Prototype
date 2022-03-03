@@ -16,14 +16,11 @@ uniform mat4 ModelViewMatrix;
 uniform mat3 NormalMatrix;
 uniform mat4 MVP;
 
-uniform struct SpotLightInfo {
-vec4 Position; // Position in cam coords
-vec3 L; // Diffuse/spec intensity
-vec3 La; // Amb intensity
-vec3 Direction; // Direction of the spotlight in cam coords.
-float Exponent; // Angular attenuation exponent
-float Cutoff; // Cutoff angle (between 0 and pi/2)
-} Spot;
+uniform struct LightInfo {
+ vec4 Position; // Light position in eye coords.
+ vec3 La; // Ambient light intensity
+ vec3 L; // Diffuse and specular light intensity
+} Light;
 
 void main() {
 	// Transform normal and tangent to eye space
@@ -41,7 +38,7 @@ void main() {
 
 	Position = ModelViewMatrix * vec4(VertexPosition, 1.0);
 
-	LightDir = toObjectLocal * Spot.Direction;
+	LightDir = toObjectLocal *  (Light.Position.xyz - Position.xyz);
 	ViewDir = toObjectLocal * normalize(-Position.xyz);
 
 	TexCoord = VertexTexCoord;
