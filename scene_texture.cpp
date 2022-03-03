@@ -31,8 +31,7 @@ void Scene_Texture::initScene()
 	compile();
 	glEnable(GL_DEPTH_TEST);
 
-	view = glm::lookAt(vec3(5.0f, 5.0f, 7.5f), vec3(0.0f, 0.75f, 0.0f), vec3(0.0f,
-		1.0f, 0.0f));
+	view = glm::lookAt(vec3(5.0f, 5.0f, 7.5f), vec3(0.0f, 0.75f, 0.0f), vec3(0.0f, 1.0f, 0.0f));
 	projection = mat4(1.0f);
 
 	prog.setUniform("Spot.L", vec3(0.9f));
@@ -46,15 +45,18 @@ void Scene_Texture::initScene()
 
 	prog.setUniform("Discard", false);
 
+	//Load all textures first before binding to avoid strange results!
+
 	GLuint brickTexID =
-		Texture::loadTexture("media/texture/brick1.jpg");
-	glActiveTexture(GL_TEXTURE1);
-	glBindTexture(GL_TEXTURE_2D, brickTexID);
+		Texture::loadTexture("media/texture/brick1.jpg");	
 
 	GLuint mossTexID =
 		Texture::loadTexture("media/texture/moss.png");
-	// Load moss texture file into channel 1
-	glActiveTexture(GL_TEXTURE2);
+
+	glActiveTexture(GL_TEXTURE0);
+	glBindTexture(GL_TEXTURE_2D, brickTexID);
+
+	glActiveTexture(GL_TEXTURE1);
 	glBindTexture(GL_TEXTURE_2D, mossTexID);
 }
 
