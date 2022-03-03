@@ -35,8 +35,8 @@ void Scene_Normal_Maps::initScene()
 	projection = mat4(1.0f);
 
 	prog.setUniform("Light.Position", view * glm::vec4(5.0f, 5.2f, 5.0f, 1.0f));
-	prog.setUniform("Light.L", vec3(0.8f));
-	prog.setUniform("Light.La", vec3(0.2f));
+	prog.setUniform("Light.L", vec3(1.0f));
+	prog.setUniform("Light.La", vec3(0.4f));
 
 	//Load all textures first before binding to avoid strange results!
 
@@ -76,7 +76,7 @@ void Scene_Normal_Maps::render()
 {
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-	prog.setUniform("Material.Ks", 1.0f, 1.0f, 1.0f);
+	prog.setUniform("Material.Ks", 0.2f, 0.2f, 0.2f);
 	prog.setUniform("Material.Shininess", 180.0f);
 
 	setMatrices();
