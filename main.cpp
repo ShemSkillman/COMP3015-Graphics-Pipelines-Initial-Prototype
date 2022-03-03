@@ -3,6 +3,7 @@
 #include "scenebasic_uniform.h"
 #include "scene_texture.h"
 #include "scene_toon.h"
+#include "scene_normal_maps.h"
 
 
 int main(int argc, char* argv[])
@@ -11,7 +12,7 @@ int main(int argc, char* argv[])
 
 	std::unique_ptr<Scene> scene;
 
-	scene = std::unique_ptr<Scene>(new Scene_Texture());
+	scene = std::unique_ptr<Scene>(new Scene_Normal_Maps());
 
 	return runner.run(*scene);
 }
