@@ -4,7 +4,7 @@
 #include "scene_texture.h"
 #include "scene_toon.h"
 #include "scene_normal_maps.h"
-
+#include "scene_skybox.h"
 
 int main(int argc, char* argv[])
 {
@@ -12,7 +12,7 @@ int main(int argc, char* argv[])
 
 	std::unique_ptr<Scene> scene;
 
-	scene = std::unique_ptr<Scene>(new Scene_Normal_Maps());
+	scene = std::unique_ptr<Scene>(new Scene_Skybox());
 
 	return runner.run(*scene);
 }
