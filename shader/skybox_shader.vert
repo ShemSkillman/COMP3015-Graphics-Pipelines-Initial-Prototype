@@ -2,12 +2,14 @@
 
 layout (location = 0) in vec3 VertexPosition;
 
-layout (location = 0) out vec4 Position;
+layout (location = 0) out vec3 Vec;
 
+uniform mat4 ModelViewMatrix;
 uniform mat4 MVP;
+uniform mat3 NormalMatrix;
 
 void main() {
-	Position = MVP * vec4(VertexPosition, 1.0f);
+	Vec = VertexPosition;
 
-	gl_Position = Position;
+	gl_Position = MVP * vec4(VertexPosition, 1.0);
 }

@@ -32,10 +32,13 @@ void Scene_Skybox::initScene()
 	glEnable(GL_DEPTH_TEST);
 
 	projection = mat4(1.0f);
+
 	angle = glm::radians(90.0f); //set the initial angle
+
 	//extract the cube texture
 	GLuint cubeTex =
-		Texture::loadHdrCubeMap("media/texture/cube/pisahdr/pisa");
+		Texture::loadHdrCubeMap("media/texture/cube/pisa-hdr/pisa");
+
 	//activate and bindtexture
 	glActiveTexture(GL_TEXTURE0);
 	glBindTexture(GL_TEXTURE_CUBE_MAP, cubeTex);
@@ -59,8 +62,11 @@ void Scene_Skybox::update( float t )
 	float deltaT = t - tPrev;
 	if (tPrev == 0.0f)
 		deltaT = 0.0f;
+
 	tPrev = t;
+
 	angle += rotSpeed * deltaT;
+
 	if (angle > glm::two_pi<float>())
 		angle -= glm::two_pi<float>();
 }
@@ -70,8 +76,8 @@ void Scene_Skybox::render()
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
 	vec3 cameraPos = vec3(7.0f * cos(angle), 2.0f, 7.0f * sin(angle));
-	view = glm::lookAt(cameraPos, vec3(0.0f, 0.0f, 0.0f), vec3(0.0f, 1.0f,
-		0.0f));
+	view = glm::lookAt(cameraPos, vec3(0.0f, 0.0f, 0.0f), vec3(0.0f, 1.0f,0.0f));
+	
 	// Draw sky
 	prog.use();
 	model = mat4(1.0f);
