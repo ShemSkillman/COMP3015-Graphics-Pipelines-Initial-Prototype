@@ -20,7 +20,9 @@ class Scene_Projection_Texture : public Scene
 {
 private:
     GLSLProgram prog;
-	SkyBox sky;
+	Teapot teapot;
+	Plane plane;
+
 
 	float angle, tPrev, rotSpeed;
 

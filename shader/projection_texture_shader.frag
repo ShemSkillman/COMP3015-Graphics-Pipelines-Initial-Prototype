@@ -43,7 +43,13 @@ vec4 blinnPhong(vec4 vertexPos, vec3 n)
 void main()
 {
 	//colour we receive from blinnPhong calculation
-	vec3 color = blinnPhong(normalize(EyePosition), EyeNormal);
 
-	FragColor = shadeColor; //final colour
+	vec4 color = blinnPhong(normalize(EyePosition), EyeNormal);
+
+	vec3 projTexColor = vec3(0.0);
+
+	 if( ProjTexCoord.z > 0.0 )
+		projTexColor = textureProj( ProjectorTex, ProjTexCoord ).rgb;
+
+	FragColor = vec4(color.xyz + projTexColor * 0.5, 1.0);
 }
