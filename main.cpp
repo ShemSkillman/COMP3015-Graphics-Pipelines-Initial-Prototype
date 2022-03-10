@@ -5,6 +5,7 @@
 #include "scene_toon.h"
 #include "scene_normal_maps.h"
 #include "scene_skybox.h"
+#include "scene_edge_detection.h"
 
 int main(int argc, char* argv[])
 {
@@ -12,7 +13,7 @@ int main(int argc, char* argv[])
 
 	std::unique_ptr<Scene> scene;
 
-	scene = std::unique_ptr<Scene>(new Scene_Skybox());
+	scene = std::unique_ptr<Scene>(new Scene_Edge_Detection());
 
 	return runner.run(*scene);
 }
