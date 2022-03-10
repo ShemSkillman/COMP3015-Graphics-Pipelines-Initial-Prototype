@@ -78,7 +78,7 @@
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <LinkIncremental>true</LinkIncremental>
-    <IncludePath>$(SolutionDir)Dependencies\include;$(IncludePath)</IncludePath>
+    <IncludePath>$(SolutionDir);$(SolutionDir)Scenes;$(SolutionDir)Dependencies\include;$(IncludePath)</IncludePath>
     <LibraryPath>C:\Dependencies\lib;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
@@ -159,13 +159,13 @@
     <ClCompile Include="helper\torus.cpp" />
     <ClCompile Include="helper\trianglemesh.cpp" />
     <ClCompile Include="main.cpp" />
-    <ClCompile Include="scenebasic_uniform.cpp" />
-    <ClCompile Include="scene_edge_detection.cpp" />
-    <ClCompile Include="scene_normal_maps.cpp" />
-    <ClCompile Include="scene_projection_texture.cpp" />
-    <ClCompile Include="scene_skybox.cpp" />
-    <ClCompile Include="scene_texture.cpp" />
-    <ClCompile Include="scene_toon.cpp" />
+    <ClCompile Include="Scenes\scenebasic_uniform.cpp" />
+    <ClCompile Include="Scenes\scene_edge_detection.cpp" />
+    <ClCompile Include="Scenes\scene_normal_maps.cpp" />
+    <ClCompile Include="Scenes\scene_projection_texture.cpp" />
+    <ClCompile Include="Scenes\scene_skybox.cpp" />
+    <ClCompile Include="Scenes\scene_texture.cpp" />
+    <ClCompile Include="Scenes\scene_toon.cpp" />
   </ItemGroup>
   <ItemGroup>
     <None Include="shader\basic_uniform.frag" />
@@ -232,13 +232,13 @@
     <ClInclude Include="helper\torus.h" />
     <ClInclude Include="helper\trianglemesh.h" />
     <ClInclude Include="helper\utils.h" />
-    <ClInclude Include="scenebasic_uniform.h" />
-    <ClInclude Include="scene_edge_detection.h" />
-    <ClInclude Include="scene_normal_maps.h" />
-    <ClInclude Include="scene_projection_texture.h" />
-    <ClInclude Include="scene_skybox.h" />
-    <ClInclude Include="scene_texture.h" />
-    <ClInclude Include="scene_toon.h" />
+    <ClInclude Include="Scenes\scenebasic_uniform.h" />
+    <ClInclude Include="Scenes\scene_edge_detection.h" />
+    <ClInclude Include="Scenes\scene_normal_maps.h" />
+    <ClInclude Include="Scenes\scene_projection_texture.h" />
+    <ClInclude Include="Scenes\scene_skybox.h" />
+    <ClInclude Include="Scenes\scene_texture.h" />
+    <ClInclude Include="Scenes\scene_toon.h" />
   </ItemGroup>
   <ItemGroup>
     <Text Include="Dependencies\include\glm\CMakeLists.txt" />
