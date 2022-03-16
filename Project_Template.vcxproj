@@ -163,6 +163,7 @@
     <ClCompile Include="Scenes\scene_edge_detection.cpp" />
     <ClCompile Include="Scenes\scene_normal_maps.cpp" />
     <ClCompile Include="Scenes\scene_projection_texture.cpp" />
+    <ClCompile Include="scenes\scene_render_to_texture.cpp" />
     <ClCompile Include="Scenes\scene_skybox.cpp" />
     <ClCompile Include="Scenes\scene_texture.cpp" />
     <ClCompile Include="Scenes\scene_toon.cpp" />
@@ -176,6 +177,8 @@
     <None Include="shader\normal_map_shader.vert" />
     <None Include="shader\projection_texture_shader.frag" />
     <None Include="shader\projection_texture_shader.vert" />
+    <None Include="shader\render_to_texture_shader.frag" />
+    <None Include="shader\render_to_texture_shader.vert" />
     <None Include="shader\skybox_shader.frag" />
     <None Include="shader\skybox_shader.vert" />
     <None Include="shader\texture_shader.frag" />
@@ -236,6 +239,7 @@
     <ClInclude Include="Scenes\scene_edge_detection.h" />
     <ClInclude Include="Scenes\scene_normal_maps.h" />
     <ClInclude Include="Scenes\scene_projection_texture.h" />
+    <ClInclude Include="scenes\scene_render_to_texture.h" />
     <ClInclude Include="Scenes\scene_skybox.h" />
     <ClInclude Include="Scenes\scene_texture.h" />
     <ClInclude Include="Scenes\scene_toon.h" />

@@ -7,6 +7,7 @@
 #include "scene_skybox.h"
 #include "scene_edge_detection.h"
 #include "scene_projection_texture.h"
+#include "scene_render_to_texture.h"
 
 int main(int argc, char* argv[])
 {
@@ -14,7 +15,7 @@ int main(int argc, char* argv[])
 
 	std::unique_ptr<Scene> scene;
 
-	scene = std::unique_ptr<Scene>(new Scene_Projection_Texture());
+	scene = std::unique_ptr<Scene>(new Scene_Render_To_Texture());
 
 	return runner.run(*scene);
 }

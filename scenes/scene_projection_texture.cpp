@@ -28,7 +28,6 @@ Scene_Projection_Texture::Scene_Projection_Texture() : angle(0.0f), tPrev(0.0f),
 	//
 }
 
-
 void Scene_Projection_Texture::initScene()
 {
 	compile();
