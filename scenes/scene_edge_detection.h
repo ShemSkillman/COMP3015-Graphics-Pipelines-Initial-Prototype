@@ -20,11 +20,20 @@ class Scene_Edge_Detection : public Scene
 {
 private:
     GLSLProgram prog;
-	SkyBox sky;
+
+	GLuint fsQuad, fboHandle, renderTex;
+
+	Plane plane;
+	Torus torus;
+	Teapot teapot;
 
 	float angle, tPrev, rotSpeed;
 
     void compile();
+
+	void setupFBO();
+	void pass1();
+	void pass2();
 
 public:
     Scene_Edge_Detection();

@@ -15,7 +15,7 @@ int main(int argc, char* argv[])
 
 	std::unique_ptr<Scene> scene;
 
-	scene = std::unique_ptr<Scene>(new Scene_Render_To_Texture());
+	scene = std::unique_ptr<Scene>(new Scene_Edge_Detection());
 
 	return runner.run(*scene);
 }
