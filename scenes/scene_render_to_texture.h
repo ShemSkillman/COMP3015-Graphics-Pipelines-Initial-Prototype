@@ -24,7 +24,7 @@ private:
 	std::unique_ptr<ObjMesh> spot;
 	Cube cube;
 
-	GLuint fboHandle;
+	unsigned int fboHandle;
 
 	float tPrev;
 	float angle;

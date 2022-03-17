@@ -34,7 +34,16 @@ void Scene_Render_To_Texture::initScene()
 	compile();
 	glEnable(GL_DEPTH_TEST);
 
+	prog.setUniform("Light.L", vec3(1.0f));
+	prog.setUniform("Light.La", vec3(0.15f));
+
+	GLuint spotTexID =
+		Texture::loadTexture("media/spot/spot_texture.png");	
+
 	setupFBO();
+
+	glActiveTexture(GL_TEXTURE1);
+	glBindTexture(GL_TEXTURE_2D, spotTexID);
 }
 
 void Scene_Render_To_Texture::setupFBO()
@@ -46,9 +55,13 @@ void Scene_Render_To_Texture::setupFBO()
 	// Create the texture object
 	GLuint renderTex;
 	glGenTextures(1, &renderTex);
-	glActiveTexture(GL_TEXTURE0); // Use texture unit 0
+	glActiveTexture(GL_TEXTURE0); // Use texture unit 0, this is what renderTex is bound to
 	glBindTexture(GL_TEXTURE_2D, renderTex);
+
+	// Specifies the storage format of texture
 	glTexStorage2D(GL_TEXTURE_2D, 1, GL_RGBA8, 512, 512);
+
+	// Config texture settings
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
 
@@ -102,7 +115,7 @@ void Scene_Render_To_Texture::update( float t )
 		deltaT = 0.0f;
 
 	tPrev = t;
-	angle += 0.25f * deltaT;
+	angle += 2.0f * deltaT;
 	if (angle > glm::two_pi<float>())
 	{
 		angle -= glm::two_pi<float>();
@@ -112,13 +125,7 @@ void Scene_Render_To_Texture::update( float t )
 void Scene_Render_To_Texture::render()
 {
 	//bind the buffer
-	glBindFramebuffer(GL_FRAMEBUFFER, fboHandle);
-
-	GLuint spotTexID =
-		Texture::loadTexture("media/spot/spot_texture.png");
-
-	glActiveTexture(GL_TEXTURE0);
-	glBindTexture(GL_TEXTURE_2D, spotTexID);
+	glBindFramebuffer(GL_FRAMEBUFFER, fboHandle);	
 
 	//render to texture
 	renderToTexture();
@@ -149,7 +156,7 @@ void Scene_Render_To_Texture::renderScene() {
 	model = mat4(1.0f);
 
 	setMatrices();
-
+	
 	cube.render();
 }
 
