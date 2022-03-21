@@ -28,14 +28,12 @@ uniform struct MaterialInfo {
 
 vec4 blinnPhong(vec3 pos, vec3 n)
 {
-	vec3 texColour = texture(RenderTex, TexCoord).rgb;
-
 	//calculate ambient here
-	vec3 ambient = Light.La * texColour;
+	vec3 ambient = Light.La * Material.Ka;
 
 	vec3 s = normalize(Light.Position.xyz - pos);
 	float sDotN = max(dot(s, n), 0.0);
-	vec3 diffuse = texColour * sDotN;
+	vec3 diffuse = Material.Kd * sDotN;
 
 	//calculate specular here
 	vec3 v = normalize(-pos);
@@ -49,7 +47,8 @@ vec4 blinnPhong(vec3 pos, vec3 n)
 float luminance( vec3 color )
 {
  return dot(lum,color);
-}
+}
+
 
 vec4 pass1()
 {
@@ -79,7 +78,8 @@ vec4 pass2()
 
 	 else
 	 return vec4(0.0,0.0,0.0,1.0); //no edge
-}
+}
+
 
 void main()
 {	

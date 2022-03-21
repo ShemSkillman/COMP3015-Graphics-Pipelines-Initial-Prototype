@@ -21,7 +21,7 @@ using glm::vec4;
 using glm::mat3;
 
 Scene_Edge_Detection::Scene_Edge_Detection() : angle(0.0f), tPrev(0.0f), rotSpeed(glm::pi<float>() / 8.0f), plane(50.0f,
-	50.0f, 1, 1), teapot(14, mat4(1.0f)), torus(0.7f * 1.5f, 0.3f * 1.5f, 50, 50)
+	50.0f, 1, 1), teapot(14, mat4(1.0f)), torus(0.7f * 1.5f, 0.3f * 1.5f, 50, 50), fsQuad(0), fboHandle(0), renderTex(0)
 {
 }
 
@@ -41,12 +41,19 @@ void Scene_Edge_Detection::initScene()
 
 	// Array for full-screen quad
 	GLfloat verts[] = {
-	-1.0f, -1.0f, 0.0f, 1.0f, -1.0f, 0.0f, 1.0f, 1.0f, 0.0f,
-	-1.0f, -1.0f, 0.0f, 1.0f, 1.0f, 0.0f, -1.0f, 1.0f, 0.0f
+	-1.0f, -1.0f, 0.0f,
+	 1.0f, -1.0f, 0.0f,
+	 1.0f,  1.0f, 0.0f,
+	-1.0f, -1.0f, 0.0f,
+	 1.0f,  1.0f, 0.0f,
+	-1.0f,  1.0f, 0.0f
 	};
+
 	GLfloat tc[] = {
-	0.0f, 0.0f, 1.0f, 0.0f, 1.0f, 1.0f,
-	0.0f, 0.0f, 1.0f, 1.0f, 0.0f, 1.0f
+	0.0f, 0.0f, 1.0f,
+	0.0f, 1.0f, 1.0f,
+	0.0f, 0.0f, 1.0f, 
+	1.0f, 0.0f, 1.0f
 	};
 
 	// Set up the buffers
@@ -58,7 +65,7 @@ void Scene_Edge_Detection::initScene()
 	glBufferData(GL_ARRAY_BUFFER, 6 * 3 * sizeof(float), verts, GL_STATIC_DRAW);
 
 	glBindBuffer(GL_ARRAY_BUFFER, handle[1]);
-	glBufferData(GL_ARRAY_BUFFER, 6 * 2 * sizeof(float), tc, GL_STATIC_DRAW);
+	glBufferData(GL_ARRAY_BUFFER, 4 * 3 * sizeof(float), tc, GL_STATIC_DRAW);
 
 	// Set up the vertex array object
 
@@ -97,6 +104,7 @@ void Scene_Edge_Detection::setupFBO()
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
 
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAX_LEVEL, 0);
+
 	// Bind the texture to the FBO
 	glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D,
 		renderTex, 0);
