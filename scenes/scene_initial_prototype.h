@@ -19,16 +19,21 @@ class Scene_Initial_Prototype : public Scene
 {
 private:
     GLSLProgram prog;
-    glm::mat4 rotationMatrix;
+
+    GLuint fsQuad, fboHandle, renderTex;
+
+    float angle, tPrev, rotSpeed;
+
     Plane plane;
 	Teapot teapot;
 	Torus torus;
 	Cube cube;
 
-	float tPrev;
-	float angle;
-
     void compile();
+
+    void setupFBO();
+    void pass1();
+    void pass2();
 
 public:
     Scene_Initial_Prototype();
