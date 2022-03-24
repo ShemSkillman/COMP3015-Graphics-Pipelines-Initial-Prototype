@@ -20,7 +20,7 @@ using glm::mat4;
 using glm::vec4;
 using glm::mat3;
 
-Scene_Initial_Prototype::Scene_Initial_Prototype() : plane(50.0f, 50.0f, 1, 1), teapot(14, glm::mat4(1.0f)), torus(1.75f * 0.75f, 0.75f * 0.75f, 50, 50)
+Scene_Initial_Prototype::Scene_Initial_Prototype() : plane(100.0f, 100.0f, 1, 1), teapot(14, glm::mat4(1.0f)), torus(1.75f * 0.75f, 0.75f * 0.75f, 50, 50)
 {
 }
 
@@ -42,7 +42,7 @@ void Scene_Initial_Prototype::initScene()
 
 	prog.setUniform("Fog.MaxDist", 20.0f);
 	prog.setUniform("Fog.MinDist", 10.0f);
-	prog.setUniform("Fog.Color", vec3(0.3f, 0.4f, 0.5f));
+	prog.setUniform("Fog.Color", vec3(0.7f));
 }
 
 void Scene_Initial_Prototype::compile()
@@ -66,9 +66,11 @@ void Scene_Initial_Prototype::render()
 {
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-	prog.setUniform("Material.Kd", 0.2f, 0.55f, 0.9f);
+	vec3 teapotCol = vec3(0.2f, 0.55f, 0.9f);
+
+	prog.setUniform("Material.Kd", teapotCol);
 	prog.setUniform("Material.Ks", 0.95f, 0.95f, 0.95f);
-	prog.setUniform("Material.Ka", 0.2f * 0.3f, 0.55f * 0.3f, 0.9f * 0.3f);
+	prog.setUniform("Material.Ka", teapotCol * 0.3f);
 	prog.setUniform("Material.Shininess", 100.0f);
 
 	model = mat4(1.0f);
@@ -79,9 +81,11 @@ void Scene_Initial_Prototype::render()
 	setMatrices();
 	teapot.render();
 
-	prog.setUniform("Material.Kd", 0.2f, 0.55f, 0.9f);
+	vec3 torusCol = vec3(0.95f, 0.69f, 0.4f);
+
+	prog.setUniform("Material.Kd", torusCol);
 	prog.setUniform("Material.Ks", 0.95f, 0.95f, 0.95f);
-	prog.setUniform("Material.Ka", 0.2f * 0.3f, 0.55f * 0.3f, 0.9f * 0.3f);
+	prog.setUniform("Material.Ka", torusCol * 0.3f);
 	prog.setUniform("Material.Shininess", 100.0f);
 
 	model = mat4(1.0f);
@@ -91,9 +95,11 @@ void Scene_Initial_Prototype::render()
 	setMatrices();
 	torus.render();
 
-	prog.setUniform("Material.Kd", 0.2f, 0.55f, 0.9f);
+	vec3 cubeCol = vec3(0.2f, 0.55f, 0.9f);
+
+	prog.setUniform("Material.Kd", cubeCol);
 	prog.setUniform("Material.Ks", 0.95f, 0.95f, 0.95f);
-	prog.setUniform("Material.Ka", 0.2f * 0.3f, 0.55f * 0.3f, 0.9f * 0.3f);
+	prog.setUniform("Material.Ka", cubeCol * 0.3f);
 	prog.setUniform("Material.Shininess", 100.0f);
 
 	model = mat4(1.0f);
@@ -103,9 +109,11 @@ void Scene_Initial_Prototype::render()
 	setMatrices();
 	cube.render();
 
-	prog.setUniform("Material.Kd", 0.7f, 0.7f, 0.7f);
+	vec3 planeCol = vec3(0.8);
+
+	prog.setUniform("Material.Kd", planeCol);
 	prog.setUniform("Material.Ks", 0.9f, 0.9f, 0.9f);
-	prog.setUniform("Material.Ka", 0.2f, 0.2f, 0.2f);
+	prog.setUniform("Material.Ka", planeCol * 0.2f);
 	prog.setUniform("Material.Shininess", 180.0f);
 
 	model = mat4(1.0f);
