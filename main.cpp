@@ -8,6 +8,7 @@
 #include "scene_edge_detection.h"
 #include "scene_projection_texture.h"
 #include "scene_render_to_texture.h"
+#include "scene_initial_prototype.h"
 
 int main(int argc, char* argv[])
 {
@@ -15,7 +16,7 @@ int main(int argc, char* argv[])
 
 	std::unique_ptr<Scene> scene;
 
-	scene = std::unique_ptr<Scene>(new Scene_Edge_Detection());
+	scene = std::unique_ptr<Scene>(new Scene_Initial_Prototype());
 
 	return runner.run(*scene);
 }
