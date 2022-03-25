@@ -22,7 +22,7 @@ private:
 
     GLuint renderTex;
 
-    std::unique_ptr<ObjMesh> crateOne, bigTable, stoolOne, stoolTwo;
+    std::unique_ptr<ObjMesh> crateOne, bigTable, stoolOne, stoolTwo, crateTwo, stones, potOne, potTwo, tentSheets, curtains, ribbon, entrancePoles, hatch, ceramics, tentPegs, carpet;
 
     Plane plane;
 

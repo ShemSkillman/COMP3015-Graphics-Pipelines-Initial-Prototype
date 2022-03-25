@@ -1,0 +1,23 @@
+# Blender MTL File: 'None'
+# Material Count: 2
+
+newmtl Material__1487275039
+Ns 45.000011
+Ka 1.000000 1.000000 1.000000
+Kd 0.588000 0.588000 0.588000
+Ks 0.144500 0.144500 0.144500
+Ke 0.000000 0.000000 0.000000
+Ni 1.500000
+d 1.000000
+illum 2
+
+newmtl Standard_10
+Ns 37.999996
+Ka 1.000000 1.000000 1.000000
+Kd 0.615700 0.682400 0.035300
+Ks 0.495000 0.495000 0.495000
+Ke 0.000000 0.000000 0.000000
+Ni 1.500000
+d 1.000000
+illum 2
+map_Bump -bm 0.300000 D:\\Users\\shems\\Downloads\\New folder (5)\\tent\\textures\\Map__8911538_Noise.tga
