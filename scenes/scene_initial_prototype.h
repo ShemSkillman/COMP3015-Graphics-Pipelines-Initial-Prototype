@@ -20,20 +20,13 @@ class Scene_Initial_Prototype : public Scene
 private:
     GLSLProgram prog;
 
-    GLuint fsQuad, fboHandle, renderTex;
+    GLuint renderTex;
 
-    float angle, tPrev, rotSpeed;
+    std::unique_ptr<ObjMesh> crateOne, bigTable, stoolOne, stoolTwo;
 
     Plane plane;
-	Teapot teapot;
-	Torus torus;
-	Cube cube;
 
     void compile();
-
-    void setupFBO();
-    void pass1();
-    void pass2();
 
 public:
     Scene_Initial_Prototype();
