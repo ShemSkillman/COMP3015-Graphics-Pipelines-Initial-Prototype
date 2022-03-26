@@ -20,7 +20,7 @@ class Scene_Initial_Prototype : public Scene
 private:
     GLSLProgram progNormals, progTexture;
 
-    std::unique_ptr<ObjMesh> crateOne, bigTable, stoolOne, stoolTwo, crateTwo, stones, potOne, potTwo, tentSheets,
+    std::unique_ptr<ObjMesh> crates, bigTable, stoolOne, stoolTwo, stones, potOne, potTwo, tentSheets, rope,
         curtains, ribbon, entrancePoles, hatch, ceramics, tentPegs, carpet, tentPole, stonesTwo;
 
     glm::vec3 lightColOne, lightColTwo, targetCol, currentCol;

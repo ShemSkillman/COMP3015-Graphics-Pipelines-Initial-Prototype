@@ -1,7 +1,7 @@
 # Blender MTL File: 'None'
-# Material Count: 6
+# Material Count: 4
 
-newmtl Material__14
+newmtl Material__124252411
 Ns 10.000002
 Ka 1.000000 1.000000 1.000000
 Kd 0.588000 0.588000 0.588000
@@ -10,8 +10,9 @@ Ke 0.000000 0.000000 0.000000
 Ni 1.500000
 d 1.000000
 illum 1
+map_Kd D:\\Users\\shems\\Downloads\\New folder (5)\\tent\\textures\\rope.tga
 
-newmtl Material__14.002
+newmtl Material__124252411.002
 Ns 10.000002
 Ka 1.000000 1.000000 1.000000
 Kd 0.588000 0.588000 0.588000
@@ -20,8 +21,9 @@ Ke 0.000000 0.000000 0.000000
 Ni 1.500000
 d 1.000000
 illum 1
+map_Kd D:\\Users\\shems\\Downloads\\New folder (5)\\tent\\textures\\rope.tga
 
-newmtl Material__1444
+newmtl Material__124252411.003
 Ns 10.000002
 Ka 1.000000 1.000000 1.000000
 Kd 0.588000 0.588000 0.588000
@@ -30,8 +32,9 @@ Ke 0.000000 0.000000 0.000000
 Ni 1.500000
 d 1.000000
 illum 1
+map_Kd D:\\Users\\shems\\Downloads\\New folder (5)\\tent\\textures\\rope.tga
 
-newmtl Material__1444.001
+newmtl Material__124252411.004
 Ns 10.000002
 Ka 1.000000 1.000000 1.000000
 Kd 0.588000 0.588000 0.588000
@@ -40,23 +43,4 @@ Ke 0.000000 0.000000 0.000000
 Ni 1.500000
 d 1.000000
 illum 1
-
-newmtl Material__1444.002
-Ns 10.000002
-Ka 1.000000 1.000000 1.000000
-Kd 0.588000 0.588000 0.588000
-Ks 0.000000 0.000000 0.000000
-Ke 0.000000 0.000000 0.000000
-Ni 1.500000
-d 1.000000
-illum 1
-
-newmtl Material__1444.004
-Ns 10.000002
-Ka 1.000000 1.000000 1.000000
-Kd 0.588000 0.588000 0.588000
-Ks 0.000000 0.000000 0.000000
-Ke 0.000000 0.000000 0.000000
-Ni 1.500000
-d 1.000000
-illum 1
+map_Kd D:\\Users\\shems\\Downloads\\New folder (5)\\tent\\textures\\rope.tga

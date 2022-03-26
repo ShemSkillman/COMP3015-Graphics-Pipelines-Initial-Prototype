@@ -33,11 +33,10 @@ Scene_Initial_Prototype::Scene_Initial_Prototype(): plane(150.0f, 150.0f, 1, 1),
 
 void Scene_Initial_Prototype::importModels()
 {
-	crateOne = ObjMesh::load("media/prototype/crate.obj", false, false);
+	crates = ObjMesh::load("media/prototype/crate.obj", false, false);
 	bigTable = ObjMesh::load("media/prototype/big_table.obj", false, false);
 	stoolOne = ObjMesh::load("media/prototype/stool_1.obj", false, false);
 	stoolTwo = ObjMesh::load("media/prototype/stool_2.obj", false, false);
-	crateTwo = ObjMesh::load("media/prototype/crate2.obj", false, false);
 	stones = ObjMesh::load("media/prototype/pebbles.obj", false, false);
 	potOne = ObjMesh::load("media/prototype/pot1.obj", false, false);
 	potTwo = ObjMesh::load("media/prototype/pot2.obj", false, false);
@@ -51,6 +50,7 @@ void Scene_Initial_Prototype::importModels()
 	carpet = ObjMesh::load("media/prototype/carpet.obj", false, false);
 	tentPole = ObjMesh::load("media/prototype/tent_pole.obj", false, false);
 	stonesTwo = ObjMesh::load("media/prototype/pebbles2.obj", false, false);
+	rope = ObjMesh::load("media/prototype/rope.obj", false, false);
 }
 
 void Scene_Initial_Prototype::initScene()
@@ -118,6 +118,12 @@ void Scene_Initial_Prototype::initScene()
 	GLuint groundNormalsTexID =
 		Texture::loadTexture("media/prototype/ground_normals.jpg");
 
+	GLuint ropeTexID =
+		Texture::loadTexture("media/prototype/rope.jpg");
+
+	GLuint mapTexID =
+		Texture::loadTexture("media/prototype/parchment.jpg");
+
 	glActiveTexture(GL_TEXTURE0);
 	glBindTexture(GL_TEXTURE_2D, woodOneTexID);
 
@@ -156,6 +162,12 @@ void Scene_Initial_Prototype::initScene()
 
 	glActiveTexture(GL_TEXTURE12);
 	glBindTexture(GL_TEXTURE_2D, groundNormalsTexID);
+
+	glActiveTexture(GL_TEXTURE13);
+	glBindTexture(GL_TEXTURE_2D, ropeTexID);
+
+	glActiveTexture(GL_TEXTURE14);
+	glBindTexture(GL_TEXTURE_2D, mapTexID);
 }
 
 void Scene_Initial_Prototype::compile()
@@ -238,8 +250,7 @@ void Scene_Initial_Prototype::render()
 
 	progTexture.setUniform("RenderTex", 0);
 
-	crateOne->render();
-	crateTwo->render();
+	crates->render();
 
 	progTexture.setUniform("RenderTex", 1);
 
@@ -261,11 +272,16 @@ void Scene_Initial_Prototype::render()
 
 	progTexture.setUniform("RenderTex", 5);
 	tentSheets->render();
+
+	progTexture.setUniform("Material.Ks", vec3(0.9f) * 0.0f);
+
+	progTexture.setUniform("RenderTex", 14);
 	hatch->render();
+
+	progTexture.setUniform("Material.Ks", vec3(0.9f) * 0.3f);
 
 	progTexture.setUniform("RenderTex", 6);
 	curtains->render();
-
 	ribbon->render();
 
 	progTexture.setUniform("Material.Ks", vec3(0.9f) * 1.8f);
@@ -283,6 +299,9 @@ void Scene_Initial_Prototype::render()
 
 	progTexture.setUniform("RenderTex", 10);
 	stonesTwo->render();
+
+	progTexture.setUniform("RenderTex", 13);
+	rope->render();
 
 	model = mat4(1.0f);
 	model = glm::translate(model, vec3(0.0, -2.0, 0.0));
