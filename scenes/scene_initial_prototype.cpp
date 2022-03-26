@@ -25,9 +25,14 @@ Scene_Initial_Prototype::Scene_Initial_Prototype(): plane(150.0f, 150.0f, 1, 1),
 	lightColOne = vec3(0.4, 0.7f, 0.85f);
 	lightColTwo = vec3(1.0, 0.95f, 0.9f);
 
-	currentCol = lightColOne;
-	targetCol = lightColTwo;
+	currentCol = lightColTwo;
+	targetCol = lightColOne;
 
+	importModels();
+}
+
+void Scene_Initial_Prototype::importModels()
+{
 	crateOne = ObjMesh::load("media/prototype/crate.obj", false, false);
 	bigTable = ObjMesh::load("media/prototype/big_table.obj", false, false);
 	stoolOne = ObjMesh::load("media/prototype/stool_1.obj", false, false);
@@ -57,7 +62,7 @@ void Scene_Initial_Prototype::initScene()
 
 	progTexture.use();
 
-	progNormals.setUniform("DirLight.Direction", vec4(0.8f, 0.2f, 1.0f, 1.0f));
+	progTexture.setUniform("DirLight.Direction", vec4(0.8f, 0.2f, 1.0f, 1.0f));
 
 	progTexture.setUniform("Fog.MaxDist", 150.0f);
 	progTexture.setUniform("Fog.MinDist", 1.0f);
@@ -202,8 +207,7 @@ void Scene_Initial_Prototype::update( float t )
 			targetCol = lightColOne;
 			currentCol = lightColTwo;
 		}
-	}
-		
+	}		
 }
 
 void Scene_Initial_Prototype::render()
@@ -226,8 +230,8 @@ void Scene_Initial_Prototype::render()
 
 	progTexture.use();
 
-	progNormals.setUniform("DirLight.La", lightCol * 0.2f);
-	progNormals.setUniform("DirLight.L", lightCol * 1.5f);
+	progTexture.setUniform("DirLight.La", lightCol * 0.2f);
+	progTexture.setUniform("DirLight.L", lightCol * 1.5f);
 
 	progTexture.setUniform("Material.Ks", vec3(0.9f) * 0.3f);
 	progTexture.setUniform("Material.Shininess", 180.0f);	
@@ -264,8 +268,12 @@ void Scene_Initial_Prototype::render()
 
 	ribbon->render();
 
+	progTexture.setUniform("Material.Ks", vec3(0.9f) * 1.8f);
+
 	progTexture.setUniform("RenderTex", 7);
 	ceramics->render();
+
+	progTexture.setUniform("Material.Ks", vec3(0.9f) * 0.3f);
 
 	progTexture.setUniform("RenderTex", 8);
 	tentPegs->render();
@@ -282,7 +290,7 @@ void Scene_Initial_Prototype::render()
 
 	progNormals.use();	
 
-	progNormals.setUniform("Material.Ks", 0.9f, 0.9f, 0.9f);
+	progNormals.setUniform("Material.Ks", vec3(0.9f) * 0.3f);
 	progNormals.setUniform("Material.Shininess", 180.0f);
 
 	progNormals.setUniform("ColorTex", 11);
@@ -297,7 +305,6 @@ void Scene_Initial_Prototype::resize(int w, int h)
 	height = h;
 	projection = glm::perspective(glm::radians(60.0f), (float)w / h,
 		0.3f, 200.0f);
-
 }
 
 void Scene_Initial_Prototype::setMatrices()
