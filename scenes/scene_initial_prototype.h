@@ -18,13 +18,12 @@
 class Scene_Initial_Prototype : public Scene
 {
 private:
-    GLSLProgram prog;
+    GLSLProgram progBasic, progTexture;
 
     GLuint renderTex;
 
-    std::unique_ptr<ObjMesh> crateOne, bigTable, stoolOne, stoolTwo, crateTwo, stones, potOne, potTwo, tentSheets, curtains, ribbon, entrancePoles, hatch, ceramics, tentPegs, carpet;
-
-    Plane plane;
+    std::unique_ptr<ObjMesh> crateOne, bigTable, stoolOne, stoolTwo, crateTwo, stones, potOne, potTwo, tentSheets, 
+        curtains, ribbon, entrancePoles, hatch, ceramics, tentPegs, carpet, plane, tentPole, stonesTwo;
 
     void compile();
 

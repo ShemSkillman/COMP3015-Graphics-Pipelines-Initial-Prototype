@@ -176,12 +176,14 @@
     <None Include="shader\basic_uniform.vert" />
     <None Include="shader\edge_shader.frag" />
     <None Include="shader\edge_shader.vert" />
-    <None Include="shader\initial_prototype_shader.frag" />
-    <None Include="shader\initial_prototype_shader.vert" />
     <None Include="shader\normal_map_shader.frag" />
     <None Include="shader\normal_map_shader.vert" />
     <None Include="shader\projection_texture_shader.frag" />
     <None Include="shader\projection_texture_shader.vert" />
+    <None Include="shader\prototype\basic_shader.frag" />
+    <None Include="shader\prototype\basic_shader.vert" />
+    <None Include="shader\prototype\texture_shader.frag" />
+    <None Include="shader\prototype\texture_shader.vert" />
     <None Include="shader\render_to_texture_shader.frag" />
     <None Include="shader\render_to_texture_shader.vert" />
     <None Include="shader\skybox_shader.frag" />

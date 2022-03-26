@@ -20,7 +20,7 @@ using glm::mat4;
 using glm::vec4;
 using glm::mat3;
 
-Scene_Initial_Prototype::Scene_Initial_Prototype() : plane(100.0f, 100.0f, 1, 1), renderTex(0)
+Scene_Initial_Prototype::Scene_Initial_Prototype() : renderTex(0)
 {
 	crateOne = ObjMesh::load("media/prototype/crate.obj", false, false);
 	bigTable = ObjMesh::load("media/prototype/big_table.obj", false, false);
@@ -38,6 +38,9 @@ Scene_Initial_Prototype::Scene_Initial_Prototype() : plane(100.0f, 100.0f, 1, 1)
 	ceramics = ObjMesh::load("media/prototype/ceramics.obj", false, false);
 	tentPegs = ObjMesh::load("media/prototype/tent_pegs.obj", false, false);
 	carpet = ObjMesh::load("media/prototype/carpet.obj", false, false);
+	plane = ObjMesh::load("media/prototype/plane.obj", false, false);
+	tentPole = ObjMesh::load("media/prototype/tent_pole.obj", false, false);
+	stonesTwo = ObjMesh::load("media/prototype/pebbles2.obj", false, false);
 }
 
 void Scene_Initial_Prototype::initScene()
@@ -45,7 +48,7 @@ void Scene_Initial_Prototype::initScene()
 	compile();
 	glEnable(GL_DEPTH_TEST);
 
-	glClearColor(1.0f, 0.0f, 0.0f, 1.0f);
+	glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
 
 	projection = mat4(1.0f);
 
@@ -56,7 +59,7 @@ void Scene_Initial_Prototype::initScene()
 		Texture::loadTexture("media/prototype/wood2.jpg");
 
 	GLuint stoneOneTexID =
-		Texture::loadTexture("media/prototype/stone2.jpg");
+		Texture::loadTexture("media/prototype/stone.jpg");
 
 	GLuint potOneTexID =
 		Texture::loadTexture("media/prototype/pot_tex_1.jpg");
@@ -78,6 +81,12 @@ void Scene_Initial_Prototype::initScene()
 
 	GLuint carpetTexID =
 		Texture::loadTexture("media/prototype/carpet.jpg");
+
+	GLuint stoneTwoTexID =
+		Texture::loadTexture("media/prototype/stone2.jpg");
+
+	GLuint whiteTexID =
+		Texture::loadTexture("media/prototype/ground.jpg");
 
 	glActiveTexture(GL_TEXTURE0);
 	glBindTexture(GL_TEXTURE_2D, woodOneTexID);
@@ -109,24 +118,45 @@ void Scene_Initial_Prototype::initScene()
 	glActiveTexture(GL_TEXTURE9);
 	glBindTexture(GL_TEXTURE_2D, carpetTexID);
 
-	prog.setUniform("DirLight.Direction", vec4(0.8f, 0.5f, 1.0f, 1.0f));
-	prog.setUniform("DirLight.La", vec3(0.4f));
-	prog.setUniform("DirLight.L", vec3(0.8f));
+	glActiveTexture(GL_TEXTURE10);
+	glBindTexture(GL_TEXTURE_2D, stoneTwoTexID);
 
-	view = glm::lookAt(vec3(70, 40, 70),
-		vec3(0.0f, 0.0f, 0.0f), vec3(0.0f, 1.0f, 0.0f));
+	glActiveTexture(GL_TEXTURE11);
+	glBindTexture(GL_TEXTURE_2D, whiteTexID);
 
-	projection = glm::perspective(glm::radians(60.0f), (float)width / height,
-		0.3f, 100.0f);
+	progTexture.use();
+
+	progTexture.setUniform("DirLight.Direction", vec4(0.8f, 0.5f, 1.0f, 1.0f));
+	progTexture.setUniform("DirLight.La", vec3(1, 0.95f, 0.9f) * 0.4f);
+	progTexture.setUniform("DirLight.L", vec3(1, 0.95f, 0.9f) * 0.1f);
+
+	progTexture.setUniform("PointLights[0].Position", vec4(-30, 15, 30, 1));
+	progTexture.setUniform("PointLights[1].Position", vec4(30, 15, 30, 1));
+
+	progTexture.setUniform("PointLights[0].L", vec3(0.5, 1, 0.6) * 0.7f);
+	progTexture.setUniform("PointLights[1].L", vec3(0.3, 0.4, 1) * 0.4f);
+
+	progTexture.setUniform("PointLights[0].La", vec3(0, 1, 0) * 0.1f);
+	progTexture.setUniform("PointLights[1].La", vec3(0, 0, 1) * 0.1f);
+
+	view = glm::lookAt(vec3(90, 60, 90),
+		vec3(0.0f, 20.0f, 0.0f), vec3(0.0f, 1.0f, 0.0f));
+
+	projection = glm::perspective(glm::radians(90.0f), (float)width / height,
+		0.3f, 200.0f);
 }
 
 void Scene_Initial_Prototype::compile()
 {
 	try {
-		prog.compileShader("shader/initial_prototype_shader.vert");
-		prog.compileShader("shader/initial_prototype_shader.frag");
-		prog.link();
-		prog.use();
+		progTexture.compileShader("shader/prototype/texture_shader.vert");
+		progTexture.compileShader("shader/prototype/texture_shader.frag");
+		progTexture.link();
+		
+		progBasic.compileShader("shader/prototype/basic_shader.vert");
+		progBasic.compileShader("shader/prototype/basic_shader.frag");
+		progBasic.link();
+		
 	} catch (GLSLProgramException &e) {
 		cerr << e.what() << endl;
 		exit(EXIT_FAILURE);
@@ -139,55 +169,63 @@ void Scene_Initial_Prototype::update( float t )
 
 void Scene_Initial_Prototype::render()
 {
-
 	glEnable(GL_DEPTH_TEST);
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-
-	prog.setUniform("Material.Ks", 0.9f, 0.9f, 0.9f);
-	prog.setUniform("Material.Shininess", 180.0f);
 
 	model = mat4(1.0f);
 	setMatrices();
 
-	prog.setUniform("RenderTex", 0);
+	progTexture.use();
+
+	progTexture.setUniform("Material.Ks", 0.9f, 0.9f, 0.9f);
+	progTexture.setUniform("Material.Shininess", 180.0f);	
+
+	progTexture.setUniform("RenderTex", 0);
 
 	crateOne->render();
 	crateTwo->render();
 
-	prog.setUniform("RenderTex", 1);
+	progTexture.setUniform("RenderTex", 1);
 
 	bigTable->render();
 	stoolOne->render();
 	stoolTwo->render();
 	entrancePoles->render();
+	tentPole->render();
 
-	prog.setUniform("RenderTex", 2);
+	progTexture.setUniform("RenderTex", 2);
 
 	stones->render();
 
-	prog.setUniform("RenderTex", 3);
+	progTexture.setUniform("RenderTex", 3);
 	potOne->render();
 
-	prog.setUniform("RenderTex", 4);
+	progTexture.setUniform("RenderTex", 4);
 	potTwo->render();
 
-	prog.setUniform("RenderTex", 5);
+	progTexture.setUniform("RenderTex", 5);
 	tentSheets->render();
 	hatch->render();
 
-	prog.setUniform("RenderTex", 6);
+	progTexture.setUniform("RenderTex", 6);
 	curtains->render();
 
 	ribbon->render();
 
-	prog.setUniform("RenderTex", 7);
+	progTexture.setUniform("RenderTex", 7);
 	ceramics->render();
 
-	prog.setUniform("RenderTex", 8);
+	progTexture.setUniform("RenderTex", 8);
 	tentPegs->render();
 
-	prog.setUniform("RenderTex", 9);
+	progTexture.setUniform("RenderTex", 9);
 	carpet->render();
+
+	progTexture.setUniform("RenderTex", 10);
+	stonesTwo->render();
+
+	progTexture.setUniform("RenderTex", 11);
+	plane->render();	
 }
 
 void Scene_Initial_Prototype::resize(int w, int h)
@@ -203,8 +241,13 @@ void Scene_Initial_Prototype::resize(int w, int h)
 void Scene_Initial_Prototype::setMatrices()
 {
 	mat4 mv = view * model;
-	prog.setUniform("ModelViewMatrix", mv);
-	prog.setUniform("NormalMatrix", glm::mat3(vec3(mv[0]),
+	progBasic.setUniform("ModelViewMatrix", mv);
+	progBasic.setUniform("NormalMatrix", glm::mat3(vec3(mv[0]),
 		vec3(mv[1]), vec3(mv[2])));
-	prog.setUniform("MVP", projection * mv);
+	progBasic.setUniform("MVP", projection * mv);
+
+	progTexture.setUniform("ModelViewMatrix", mv);
+	progTexture.setUniform("NormalMatrix", glm::mat3(vec3(mv[0]),
+		vec3(mv[1]), vec3(mv[2])));
+	progTexture.setUniform("MVP", projection * mv);
 }
