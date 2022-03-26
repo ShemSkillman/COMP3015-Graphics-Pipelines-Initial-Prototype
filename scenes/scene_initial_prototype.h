@@ -21,12 +21,12 @@ private:
     GLSLProgram progNormals, progTexture;
 
     std::unique_ptr<ObjMesh> crates, bigTable, stoolOne, stoolTwo, stones, potOne, potTwo, tentSheets, rope,
-        curtains, ribbon, entrancePoles, hatch, ceramics, tentPegs, carpet, tentPole, stonesTwo;
+        curtains, ribbon, scrollHandles, scrollParchment, ceramics, tentPegs, carpet, tentPole, stonesTwo;
 
     glm::vec3 lightColOne, lightColTwo, targetCol, currentCol;
 
     float colourProgress, changeColSpeed;
-
+    float spotDelta, spotChangeSpeed;
     float angle, tPrev, rotSpeed;
 
     Plane plane;
@@ -38,6 +38,7 @@ public:
     Scene_Initial_Prototype();
 
     void initScene();
+    void loadTextures();
     void update( float t );
     void render();
     void resize(int, int);

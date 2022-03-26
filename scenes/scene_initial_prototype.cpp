@@ -22,6 +22,9 @@ using glm::mat3;
 
 Scene_Initial_Prototype::Scene_Initial_Prototype(): plane(150.0f, 150.0f, 1, 1), angle(0.0f), tPrev(0.0f), rotSpeed(glm::pi<float>() / 8.0f), changeColSpeed(0.1f)
 {
+	spotDelta = 0;
+	spotChangeSpeed = 3.0f;
+
 	lightColOne = vec3(0.4, 0.7f, 0.85f);
 	lightColTwo = vec3(1.0, 0.95f, 0.9f);
 
@@ -43,8 +46,8 @@ void Scene_Initial_Prototype::importModels()
 	tentSheets = ObjMesh::load("media/prototype/tent_sheets.obj", false, false);
 	curtains = ObjMesh::load("media/prototype/curtains.obj", false, false);
 	ribbon = ObjMesh::load("media/prototype/ribbon.obj", false, false);
-	entrancePoles = ObjMesh::load("media/prototype/entrance_poles.obj", false, false);
-	hatch = ObjMesh::load("media/prototype/hatch.obj", false, false);
+	scrollHandles = ObjMesh::load("media/prototype/entrance_poles.obj", false, false);
+	scrollParchment = ObjMesh::load("media/prototype/hatch.obj", false, false);
 	ceramics = ObjMesh::load("media/prototype/ceramics.obj", false, false);
 	tentPegs = ObjMesh::load("media/prototype/tent_pegs.obj", false, false);
 	carpet = ObjMesh::load("media/prototype/carpet.obj", false, false);
@@ -64,7 +67,6 @@ void Scene_Initial_Prototype::initScene()
 
 	progTexture.setUniform("DirLight.Direction", vec4(0.8f, 0.2f, 1.0f, 1.0f));
 
-	progTexture.setUniform("Spot.L", vec3(1, 0.7f, 0.3f) * 3.8f);
 	progTexture.setUniform("Spot.La", vec3(0.0f));
 	progTexture.setUniform("Spot.Exponent", 50.0f);
 	progTexture.setUniform("Spot.Cutoff", glm::radians(30.0f));
@@ -81,9 +83,14 @@ void Scene_Initial_Prototype::initScene()
 	progNormals.setUniform("Fog.MinDist", 50.0f);
 	progNormals.setUniform("Fog.Color", vec3(0.9f, 0.9f, 0.9f));
 
-	projection = glm::perspective(glm::radians(90.0f), (float)width / height,
+	projection = glm::perspective(glm::radians(60.0f), (float)width / height,
 		0.3f, 200.0f);
 
+	loadTextures();
+}
+
+void Scene_Initial_Prototype::loadTextures()
+{
 	GLuint woodOneTexID =
 		Texture::loadTexture("media/prototype/wood.jpg");
 
@@ -180,13 +187,11 @@ void Scene_Initial_Prototype::compile()
 	try {		
 		progTexture.compileShader("shader/prototype/texture_shader.vert");
 		progTexture.compileShader("shader/prototype/texture_shader.frag");
-		progTexture.link();		
-		progTexture.use();
+		progTexture.link();
 
 		progNormals.compileShader("shader/prototype/normals_shader.vert");
 		progNormals.compileShader("shader/prototype/normals_shader.frag");
 		progNormals.link();
-		progNormals.use();
 		
 	} catch (GLSLProgramException &e) {
 		cerr << e.what() << endl;
@@ -224,7 +229,9 @@ void Scene_Initial_Prototype::update( float t )
 			targetCol = lightColOne;
 			currentCol = lightColTwo;
 		}
-	}		
+	}
+
+	spotDelta += spotChangeSpeed * deltaT;
 }
 
 void Scene_Initial_Prototype::render()
@@ -239,11 +246,6 @@ void Scene_Initial_Prototype::render()
 	setMatrices();	
 
 	vec3 lightCol = glm::mix(currentCol, targetCol, colourProgress);
-
-	progNormals.use();
-
-	progNormals.setUniform("DirLight.La", lightCol * 0.2f);
-	progNormals.setUniform("DirLight.L", lightCol * 1.0f);
 
 	progTexture.use();
 
@@ -261,19 +263,16 @@ void Scene_Initial_Prototype::render()
 	progTexture.setUniform("Material.Shininess", 180.0f);	
 
 	progTexture.setUniform("RenderTex", 0);
-
 	crates->render();
 
 	progTexture.setUniform("RenderTex", 1);
-
 	bigTable->render();
 	stoolOne->render();
 	stoolTwo->render();
-	entrancePoles->render();
+	scrollHandles->render();
 	tentPole->render();
 
 	progTexture.setUniform("RenderTex", 2);
-
 	stones->render();
 
 	progTexture.setUniform("RenderTex", 3);
@@ -288,8 +287,8 @@ void Scene_Initial_Prototype::render()
 	progTexture.setUniform("Material.Ks", vec3(0.9f) * 0.0f);
 
 	progTexture.setUniform("RenderTex", 14);
-	progTexture.setUniform("Spot.L", vec3(1, 0.7f, 0.3f) * 1.8f);
-	hatch->render();
+	progTexture.setUniform("Spot.L", vec3(1, 0.7f, 0.3f) * ((cos(spotDelta)+1)/2) * 1.8f);
+	scrollParchment->render();
 	progTexture.setUniform("Spot.L", vec3(0.0f));
 
 	progTexture.setUniform("Material.Ks", vec3(0.9f) * 0.3f);
@@ -323,6 +322,9 @@ void Scene_Initial_Prototype::render()
 
 	progNormals.use();	
 
+	progNormals.setUniform("DirLight.La", lightCol * 0.2f);
+	progNormals.setUniform("DirLight.L", lightCol * 1.0f);
+
 	progNormals.setUniform("Material.Ks", vec3(0.9f) * 0.3f);
 	progNormals.setUniform("Material.Shininess", 180.0f);
 
@@ -336,7 +338,7 @@ void Scene_Initial_Prototype::resize(int w, int h)
 	glViewport(0, 0, w, h);
 	width = w;
 	height = h;
-	projection = glm::perspective(glm::radians(60.0f), (float)w / h,
+	projection = glm::perspective(glm::radians(60.0f), (float)width / height,
 		0.3f, 200.0f);
 }
 
