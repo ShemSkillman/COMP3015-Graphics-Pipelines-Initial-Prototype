@@ -64,6 +64,11 @@ void Scene_Initial_Prototype::initScene()
 
 	progTexture.setUniform("DirLight.Direction", vec4(0.8f, 0.2f, 1.0f, 1.0f));
 
+	progTexture.setUniform("Spot.L", vec3(1, 0.7f, 0.3f) * 1.8f);
+	progTexture.setUniform("Spot.La", vec3(0.0f));
+	progTexture.setUniform("Spot.Exponent", 200.0f);
+	progTexture.setUniform("Spot.Cutoff", glm::radians(9.0f));
+
 	progTexture.setUniform("Fog.MaxDist", 150.0f);
 	progTexture.setUniform("Fog.MinDist", 1.0f);
 	progTexture.setUniform("Fog.Color", vec3(0.5f, 0.5f, 0.5f));
@@ -242,6 +247,13 @@ void Scene_Initial_Prototype::render()
 
 	progTexture.use();
 
+	vec4 lightPos = vec4(-49.0f, 50.0f, 0.0f, 1.0f);
+	progTexture.setUniform("Spot.Position", view * lightPos);
+
+	mat3 normalMatrix = mat3(vec3(view[0]), vec3(view[1]), vec3(view[2]));
+
+	progTexture.setUniform("Spot.Direction", normalMatrix * vec3(0.0f, -50.0f, 0.0f));
+
 	progTexture.setUniform("DirLight.La", lightCol * 0.2f);
 	progTexture.setUniform("DirLight.L", lightCol * 1.5f);
 
@@ -276,7 +288,9 @@ void Scene_Initial_Prototype::render()
 	progTexture.setUniform("Material.Ks", vec3(0.9f) * 0.0f);
 
 	progTexture.setUniform("RenderTex", 14);
+	progTexture.setUniform("Spot.L", vec3(1, 0.7f, 0.3f) * 1.8f);
 	hatch->render();
+	progTexture.setUniform("Spot.L", vec3(0.0f));
 
 	progTexture.setUniform("Material.Ks", vec3(0.9f) * 0.3f);
 

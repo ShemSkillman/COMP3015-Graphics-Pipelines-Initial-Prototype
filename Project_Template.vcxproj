@@ -180,8 +180,6 @@
     <None Include="shader\normal_map_shader.vert" />
     <None Include="shader\projection_texture_shader.frag" />
     <None Include="shader\projection_texture_shader.vert" />
-    <None Include="shader\prototype\basic_shader.frag" />
-    <None Include="shader\prototype\basic_shader.vert" />
     <None Include="shader\prototype\normals_shader.frag" />
     <None Include="shader\prototype\normals_shader.vert" />
     <None Include="shader\prototype\texture_shader.frag" />
