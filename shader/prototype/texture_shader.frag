@@ -9,7 +9,7 @@ layout (binding = 0) uniform sampler2D RenderTex;
 layout (location = 0) out vec4 FragColor;
 
 uniform struct DirectionLightInfo {
- vec4 Direction; // Light position in eye coords.
+ vec4 Direction;
  vec3 La; // Ambient light intensity
  vec3 L; // Diffuse and specular light intensity
 } DirLight;
