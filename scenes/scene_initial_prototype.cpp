@@ -20,7 +20,7 @@ using glm::mat4;
 using glm::vec4;
 using glm::mat3;
 
-Scene_Initial_Prototype::Scene_Initial_Prototype(): plane(150.0f, 150.0f, 1, 1)
+Scene_Initial_Prototype::Scene_Initial_Prototype(): plane(150.0f, 150.0f, 1, 1), angle(0.0f), tPrev(0.0f), rotSpeed(glm::pi<float>() / 8.0f)
 {
 	crateOne = ObjMesh::load("media/prototype/crate.obj", false, false);
 	bigTable = ObjMesh::load("media/prototype/big_table.obj", false, false);
@@ -69,9 +69,6 @@ void Scene_Initial_Prototype::initScene()
 	progNormals.setUniform("DirLight.Direction", vec4(0.8f, 0.5f, 1.0f, 1.0f));
 	progNormals.setUniform("DirLight.La", vec3(1, 0.95f, 0.9f) * 0.6f);
 	progNormals.setUniform("DirLight.L", vec3(1, 0.95f, 0.9f) * 0.2f);
-
-	view = glm::lookAt(vec3(90, 60, 90),
-		vec3(0.0f, 20.0f, 0.0f), vec3(0.0f, 1.0f, 0.0f));
 
 	projection = glm::perspective(glm::radians(90.0f), (float)width / height,
 		0.3f, 200.0f);
@@ -176,6 +173,17 @@ void Scene_Initial_Prototype::compile()
 
 void Scene_Initial_Prototype::update( float t )
 {
+	float deltaT = (t - tPrev) * 0.5f;
+
+	if (tPrev == 0.0f)
+		deltaT = 0.0f;
+
+	tPrev = t;
+
+	angle += rotSpeed * deltaT;
+
+	if (angle > glm::two_pi<float>())
+		angle -= glm::two_pi<float>();
 }
 
 void Scene_Initial_Prototype::render()
@@ -183,12 +191,18 @@ void Scene_Initial_Prototype::render()
 	glEnable(GL_DEPTH_TEST);
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
+	/*view = glm::lookAt(vec3(90, 60, 90),
+		vec3(0.0f, 20.0f, 0.0f), vec3(0.0f, 1.0f, 0.0f));*/
+
+	view = glm::lookAt(vec3(90.0f * sin(angle) * cos(angle), 60.0f, 90.0f * cos(angle)),
+		vec3(0.0f, 20.0f, 0.0f), vec3(0.0f, 1.0f, 0.0f));
+
 	model = mat4(1.0f);
 	setMatrices();
 
 	progTexture.use();
 
-	progTexture.setUniform("Material.Ks", 0.9f, 0.9f, 0.9f);
+	progTexture.setUniform("Material.Ks", vec3(0.9f) * 0.3f);
 	progTexture.setUniform("Material.Shininess", 180.0f);	
 
 	progTexture.setUniform("RenderTex", 0);
@@ -236,6 +250,7 @@ void Scene_Initial_Prototype::render()
 	stonesTwo->render();
 
 	model = mat4(1.0f);
+	model = glm::translate(model, vec3(0.0, -2.0, 0.0));
 	setMatrices();
 
 	progNormals.use();	
