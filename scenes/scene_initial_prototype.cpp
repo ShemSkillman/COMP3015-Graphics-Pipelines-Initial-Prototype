@@ -64,22 +64,22 @@ void Scene_Initial_Prototype::initScene()
 
 	progTexture.setUniform("DirLight.Direction", vec4(0.8f, 0.2f, 1.0f, 1.0f));
 
-	progTexture.setUniform("Spot.L", vec3(1, 0.7f, 0.3f) * 1.8f);
+	progTexture.setUniform("Spot.L", vec3(1, 0.7f, 0.3f) * 3.8f);
 	progTexture.setUniform("Spot.La", vec3(0.0f));
-	progTexture.setUniform("Spot.Exponent", 200.0f);
-	progTexture.setUniform("Spot.Cutoff", glm::radians(9.0f));
+	progTexture.setUniform("Spot.Exponent", 50.0f);
+	progTexture.setUniform("Spot.Cutoff", glm::radians(30.0f));
 
-	progTexture.setUniform("Fog.MaxDist", 150.0f);
-	progTexture.setUniform("Fog.MinDist", 1.0f);
-	progTexture.setUniform("Fog.Color", vec3(0.5f, 0.5f, 0.5f));
+	progTexture.setUniform("Fog.MaxDist", 200.0f);
+	progTexture.setUniform("Fog.MinDist", 50.0f);
+	progTexture.setUniform("Fog.Color", vec3(0.9f, 0.9f, 0.9f));
 
 	progNormals.use();	
 
 	progNormals.setUniform("DirLight.Direction", vec4(0.8f, 0.2f, 1.0f, 1.0f));
 
-	progNormals.setUniform("Fog.MaxDist", 150.0f);
+	progNormals.setUniform("Fog.MaxDist", 200.0f);
 	progNormals.setUniform("Fog.MinDist", 50.0f);
-	progNormals.setUniform("Fog.Color", vec3(0.5f, 0.5f, 0.5f));
+	progNormals.setUniform("Fog.Color", vec3(0.9f, 0.9f, 0.9f));
 
 	projection = glm::perspective(glm::radians(90.0f), (float)width / height,
 		0.3f, 200.0f);
@@ -243,7 +243,7 @@ void Scene_Initial_Prototype::render()
 	progNormals.use();
 
 	progNormals.setUniform("DirLight.La", lightCol * 0.2f);
-	progNormals.setUniform("DirLight.L", lightCol * 1.5f);
+	progNormals.setUniform("DirLight.L", lightCol * 1.0f);
 
 	progTexture.use();
 
@@ -255,7 +255,7 @@ void Scene_Initial_Prototype::render()
 	progTexture.setUniform("Spot.Direction", normalMatrix * vec3(0.0f, -50.0f, 0.0f));
 
 	progTexture.setUniform("DirLight.La", lightCol * 0.2f);
-	progTexture.setUniform("DirLight.L", lightCol * 1.5f);
+	progTexture.setUniform("DirLight.L", lightCol * 1.0f);
 
 	progTexture.setUniform("Material.Ks", vec3(0.9f) * 0.3f);
 	progTexture.setUniform("Material.Shininess", 180.0f);	
@@ -298,7 +298,7 @@ void Scene_Initial_Prototype::render()
 	curtains->render();
 	ribbon->render();
 
-	progTexture.setUniform("Material.Ks", vec3(0.9f) * 1.8f);
+	progTexture.setUniform("Material.Ks", vec3(0.9f) * 1.0f);
 
 	progTexture.setUniform("RenderTex", 7);
 	ceramics->render();
