@@ -12,8 +12,8 @@ using std::string;
 using std::cerr;
 using std::endl;
 
-#include "helper/glutils.h"
-#include "helper/texture.h"
+#include "glutils.h"
+#include "texture.h"
 
 using glm::vec3;
 using glm::mat4;
@@ -120,6 +120,9 @@ void Scene_Render_To_Texture::update( float t )
 	{
 		angle -= glm::two_pi<float>();
 	}
+	
+	std::string blah;
+	std::cin >> blah;
 }
 
 void Scene_Render_To_Texture::render()

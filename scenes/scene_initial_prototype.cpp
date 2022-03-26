@@ -12,8 +12,8 @@ using std::string;
 using std::cerr;
 using std::endl;
 
-#include "helper/glutils.h"
-#include "helper/texture.h"
+#include "glutils.h"
+#include "texture.h"
 
 using glm::vec3;
 using glm::mat4;
@@ -287,7 +287,8 @@ void Scene_Initial_Prototype::render()
 	progTexture.setUniform("Material.Ks", vec3(0.9f) * 0.0f);
 
 	progTexture.setUniform("RenderTex", 14);
-	progTexture.setUniform("Spot.L", vec3(1, 0.7f, 0.3f) * ((cos(spotDelta)+1)/2) * 1.8f);
+	float spotIntensity = (cos(spotDelta) + 1) / 2;
+	progTexture.setUniform("Spot.L", vec3(1, 0.7f, 0.3f) * spotIntensity * 1.8f);
 	scrollParchment->render();
 	progTexture.setUniform("Spot.L", vec3(0.0f));
 

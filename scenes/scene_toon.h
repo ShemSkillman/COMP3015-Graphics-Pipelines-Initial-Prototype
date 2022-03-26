@@ -1,19 +1,19 @@
 #ifndef SCENE_TOON_H
 #define SCENE_TOON_H
 
-#include "helper/scene.h"
+#include "scene.h"
 
 #include <glad/glad.h>
-#include "helper/glslprogram.h"
+#include "glslprogram.h"
 #include <glm/glm.hpp>
 #include <glm/gtc/matrix_transform.hpp>
-#include "helper/plane.h"
-#include "helper/teapot.h"
-#include "helper/torus.h"
-#include "helper/objmesh.h"
+#include "plane.h"
+#include "teapot.h"
+#include "torus.h"
+#include "objmesh.h"
 #include "glm/glm.hpp"
 #include <sstream>
-#include "helper/cube.h"
+#include "cube.h"
 
 class Scene_Toon : public Scene
 {

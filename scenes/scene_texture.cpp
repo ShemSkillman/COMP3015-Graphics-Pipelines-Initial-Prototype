@@ -12,8 +12,8 @@ using std::string;
 using std::cerr;
 using std::endl;
 
-#include "helper/glutils.h"
-#include "helper/texture.h"
+#include "glutils.h"
+#include "texture.h"
 
 using glm::vec3;
 using glm::mat4;
