@@ -23,6 +23,10 @@ private:
     std::unique_ptr<ObjMesh> crateOne, bigTable, stoolOne, stoolTwo, crateTwo, stones, potOne, potTwo, tentSheets, 
         curtains, ribbon, entrancePoles, hatch, ceramics, tentPegs, carpet, tentPole, stonesTwo, ogre;
 
+    glm::vec3 lightColOne, lightColTwo, targetCol, currentCol;
+
+    float colourProgress, changeColSpeed;
+
     float angle, tPrev, rotSpeed;
 
     Plane plane;

@@ -3,6 +3,7 @@
 layout (location = 0) in vec2 TexCoord;
 layout (location = 1) in vec3 LightDir;
 layout (location = 2) in vec3 ViewDir;
+layout (location = 3) in vec4 Position;
 
 layout(binding=0) uniform sampler2D ColorTex;
 layout(binding=1) uniform sampler2D NormalMapTex;
@@ -19,6 +20,13 @@ uniform struct MaterialInfo {
  vec3 Ks; // Specular reflectivity
  float Shininess; // Specular shininess factor
 } Material;
+
+uniform struct FogInfo
+{
+float MaxDist; //max distance
+float MinDist; //min distance
+vec3 Color; //colour of the fog
+} Fog;
 
 vec4 blinnPhong(vec3 n)
 {
@@ -41,9 +49,17 @@ vec4 blinnPhong(vec3 n)
 
 void main()
 {
+	float dist = abs(Position.z); //distance calculations
+
+	//fogFactor calculation based on the formula presented earlier
+	float fogFactor = (Fog.MaxDist - dist) / (Fog.MaxDist - Fog.MinDist);
+	fogFactor = clamp(fogFactor, 0.0, 1.0); //we clamp values
+
 	vec3 norm = texture(NormalMapTex, TexCoord).xyz;
 	norm.xy = 2.0 * norm.xy - 1.0;
 
 	vec4 shadeColor = blinnPhong(normalize(norm));
-	FragColor = shadeColor; // final colour
+
+	vec3 color = mix(Fog.Color, shadeColor.xyz, fogFactor);
+	FragColor = vec4(color, 1.0);
 }

@@ -20,8 +20,14 @@ using glm::mat4;
 using glm::vec4;
 using glm::mat3;
 
-Scene_Initial_Prototype::Scene_Initial_Prototype(): plane(150.0f, 150.0f, 1, 1), angle(0.0f), tPrev(0.0f), rotSpeed(glm::pi<float>() / 8.0f)
+Scene_Initial_Prototype::Scene_Initial_Prototype(): plane(150.0f, 150.0f, 1, 1), angle(0.0f), tPrev(0.0f), rotSpeed(glm::pi<float>() / 8.0f), changeColSpeed(0.1f)
 {
+	lightColOne = vec3(0.4, 0.7f, 0.85f);
+	lightColTwo = vec3(1.0, 0.95f, 0.9f);
+
+	currentCol = lightColOne;
+	targetCol = lightColTwo;
+
 	crateOne = ObjMesh::load("media/prototype/crate.obj", false, false);
 	bigTable = ObjMesh::load("media/prototype/big_table.obj", false, false);
 	stoolOne = ObjMesh::load("media/prototype/stool_1.obj", false, false);
@@ -47,28 +53,23 @@ void Scene_Initial_Prototype::initScene()
 	compile();
 	glEnable(GL_DEPTH_TEST);
 
-	glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
+	glClearColor(0.9f, 0.9f, 0.9f, 1.0f);
 
 	progTexture.use();
 
-	progTexture.setUniform("DirLight.Direction", vec4(0.8f, 0.5f, 1.0f, 1.0f));
-	progTexture.setUniform("DirLight.La", vec3(1, 0.95f, 0.9f) * 0.4f);
-	progTexture.setUniform("DirLight.L", vec3(1, 0.95f, 0.9f) * 0.1f);
+	progNormals.setUniform("DirLight.Direction", vec4(0.8f, 0.2f, 1.0f, 1.0f));
 
-	progTexture.setUniform("PointLights[0].Position", vec4(-30, 15, 30, 1));
-	progTexture.setUniform("PointLights[1].Position", vec4(30, 15, 30, 1));
+	progTexture.setUniform("Fog.MaxDist", 150.0f);
+	progTexture.setUniform("Fog.MinDist", 1.0f);
+	progTexture.setUniform("Fog.Color", vec3(0.5f, 0.5f, 0.5f));
 
-	progTexture.setUniform("PointLights[0].L", vec3(0.5, 1, 0.6) * 0.7f);
-	progTexture.setUniform("PointLights[1].L", vec3(0.3, 0.4, 1) * 0.4f);
+	progNormals.use();	
 
-	progTexture.setUniform("PointLights[0].La", vec3(0, 1, 0) * 0.1f);
-	progTexture.setUniform("PointLights[1].La", vec3(0, 0, 1) * 0.1f);
+	progNormals.setUniform("DirLight.Direction", vec4(0.8f, 0.2f, 1.0f, 1.0f));
 
-	progNormals.use();
-
-	progNormals.setUniform("DirLight.Direction", vec4(0.8f, 0.5f, 1.0f, 1.0f));
-	progNormals.setUniform("DirLight.La", vec3(1, 0.95f, 0.9f) * 0.6f);
-	progNormals.setUniform("DirLight.L", vec3(1, 0.95f, 0.9f) * 0.2f);
+	progNormals.setUniform("Fog.MaxDist", 150.0f);
+	progNormals.setUniform("Fog.MinDist", 50.0f);
+	progNormals.setUniform("Fog.Color", vec3(0.5f, 0.5f, 0.5f));
 
 	projection = glm::perspective(glm::radians(90.0f), (float)width / height,
 		0.3f, 200.0f);
@@ -92,7 +93,7 @@ void Scene_Initial_Prototype::initScene()
 		Texture::loadTexture("media/prototype/tent2.jpg");
 
 	GLuint curtainsTexID =
-		Texture::loadTexture("media/prototype/tent1.jpg");
+		Texture::loadTexture("media/prototype/orange_cloth.jpg");
 
 	GLuint whiteChinaTexID =
 		Texture::loadTexture("media/prototype/white_china.jpg");
@@ -182,8 +183,27 @@ void Scene_Initial_Prototype::update( float t )
 
 	angle += rotSpeed * deltaT;
 
+	colourProgress += changeColSpeed * deltaT;
+
 	if (angle > glm::two_pi<float>())
 		angle -= glm::two_pi<float>();
+
+	if (colourProgress > 1)
+	{
+		colourProgress -= 1;
+
+		if (targetCol == lightColOne)
+		{
+			targetCol = lightColTwo;
+			currentCol = lightColOne;
+		}
+		else
+		{
+			targetCol = lightColOne;
+			currentCol = lightColTwo;
+		}
+	}
+		
 }
 
 void Scene_Initial_Prototype::render()
@@ -191,16 +211,23 @@ void Scene_Initial_Prototype::render()
 	glEnable(GL_DEPTH_TEST);
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-	/*view = glm::lookAt(vec3(90, 60, 90),
-		vec3(0.0f, 20.0f, 0.0f), vec3(0.0f, 1.0f, 0.0f));*/
-
 	view = glm::lookAt(vec3(90.0f * sin(angle) * cos(angle), 60.0f, 90.0f * cos(angle)),
 		vec3(0.0f, 20.0f, 0.0f), vec3(0.0f, 1.0f, 0.0f));
 
 	model = mat4(1.0f);
-	setMatrices();
+	setMatrices();	
+
+	vec3 lightCol = glm::mix(currentCol, targetCol, colourProgress);
+
+	progNormals.use();
+
+	progNormals.setUniform("DirLight.La", lightCol * 0.2f);
+	progNormals.setUniform("DirLight.L", lightCol * 1.5f);
 
 	progTexture.use();
+
+	progNormals.setUniform("DirLight.La", lightCol * 0.2f);
+	progNormals.setUniform("DirLight.L", lightCol * 1.5f);
 
 	progTexture.setUniform("Material.Ks", vec3(0.9f) * 0.3f);
 	progTexture.setUniform("Material.Shininess", 180.0f);	

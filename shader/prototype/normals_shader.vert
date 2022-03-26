@@ -8,6 +8,7 @@ layout (location = 3) in vec4 VertexTangent;
 layout (location = 0) out vec2 TexCoord;
 layout (location = 1) out vec3 LightDir;
 layout (location = 2) out vec3 ViewDir;
+layout (location = 3) out vec4 Position;
 
 uniform mat4 ModelViewMatrix;
 uniform mat3 NormalMatrix;
@@ -39,6 +40,8 @@ void main() {
 	ViewDir = toObjectLocal * normalize(-pos);
 
 	TexCoord = VertexTexCoord;
+
+	Position = ModelViewMatrix * vec4(VertexPosition, 1.0);
 
 	gl_Position = MVP * vec4(VertexPosition, 1.0);
 }
