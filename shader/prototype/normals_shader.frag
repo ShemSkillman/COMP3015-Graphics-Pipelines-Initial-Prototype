@@ -12,20 +12,20 @@ layout (location = 0) out vec4 FragColor;
 
 uniform struct DirectionLightInfo {
  vec4 Direction;
- vec3 La; // Ambient light intensity
- vec3 L; // Diffuse and specular light intensity
+ vec3 La;
+ vec3 L;
 } DirLight;
 
 uniform struct MaterialInfo {
- vec3 Ks; // Specular reflectivity
- float Shininess; // Specular shininess factor
+ vec3 Ks;
+ float Shininess;
 } Material;
 
 uniform struct FogInfo
 {
-float MaxDist; //max distance
-float MinDist; //min distance
-vec3 Color; //colour of the fog
+float MaxDist;
+float MinDist;
+vec3 Color;
 } Fog;
 
 vec4 blinnPhong(vec3 n)
@@ -49,15 +49,16 @@ vec4 blinnPhong(vec3 n)
 
 void main()
 {
-	float dist = abs(Position.z); //distance calculations
-
-	//fogFactor calculation based on the formula presented earlier
+	float dist = abs(Position.z);
+	
 	float fogFactor = (Fog.MaxDist - dist) / (Fog.MaxDist - Fog.MinDist);
-	fogFactor = clamp(fogFactor, 0.0, 1.0); //we clamp values
+	fogFactor = clamp(fogFactor, 0.0, 1.0);
 
+	// Get normal perbutation from texture
 	vec3 norm = texture(NormalMapTex, TexCoord).xyz;
 	norm.xy = 2.0 * norm.xy - 1.0;
 
+	// Feed desired normal value to blinnPhong to manipulate lighting
 	vec4 shadeColor = blinnPhong(normalize(norm));
 
 	vec3 color = mix(Fog.Color, shadeColor.xyz, fogFactor);

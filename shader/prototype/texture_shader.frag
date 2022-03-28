@@ -10,14 +10,14 @@ layout (location = 0) out vec4 FragColor;
 
 uniform struct DirectionLightInfo {
  vec4 Direction;
- vec3 La; // Ambient light intensity
- vec3 L; // Diffuse and specular light intensity
+ vec3 La;
+ vec3 L;
 } DirLight;
 
 uniform struct SpotLightInfo {
-vec4 Position; // Position in cam coords
-vec3 L; // Diffuse/spec intensity
-vec3 La; // Amb intensity
+vec4 Position;
+vec3 L;
+vec3 La;
 vec3 Direction; // Direction of the spotlight in cam coords.
 float Exponent; // Angular attenuation exponent
 float Cutoff; // Cutoff angle (between 0 and pi/2)
@@ -47,11 +47,16 @@ vec4 dirBlinnPhong(vec4 vertexPos, vec3 n)
 	vec3 s = DirLight.Direction.xyz;
 
 	float sDotN = max(dot(s, n), 0.0f);
-	//vec3 diffuse = texColour * floor(sDotN * levels) * scaleFactor;
 	vec3 diffuse = texColour * sDotN;
 
+	vec4 eyeCoords = -vertexPos;
+
 	//calculate specular here
-	vec3 v = normalize(-vertexPos.xyz);
+
+	// direction from vertex pos to eye
+	vec3 v = normalize(eyeCoords.xyz);
+
+	// approximate reflection vector (optimization)
 	vec3 h = normalize(v + s);
 
 	vec3 spec = Material.Ks * pow(max(dot(h, n), 0.0f), Material.Shininess);
@@ -63,13 +68,21 @@ vec4 blinnPhongSpot(vec4 vertexPos, vec3 n)
 {
 	vec3 texColour = texture(RenderTex, TexCoord).rgb;
 
-	vec3 ambient = texColour * Spot.La; //calculate ambient
+	vec3 ambient = texColour * Spot.La; //calculate ambient	
+
+	// Direction from vertex position to spot light position
 	vec3 s = vec3(normalize(Spot.Position - vertexPos));
 
+	// Use direction from spot light position to vertex position
 	float cosAng = dot(-s, normalize(Spot.Direction)); //cosine of the angle
-	float angle = acos(cosAng); //gives you the actual angle
+	
+	// calculate angle between spotlight center and vertex position
+	float angle = acos(cosAng);
 
 	float spotScale = 0.0;
+
+	// Does the spotlight angle cover this area?
+	// If not, the area is left completely black (with the exception of ambience)
 	if(angle < Spot.Cutoff )
 	{
 		spotScale = pow( cosAng, Spot.Exponent );
@@ -78,8 +91,10 @@ vec4 blinnPhongSpot(vec4 vertexPos, vec3 n)
 	float sDotN = max(dot(s, n), 0.0f);
 
 	vec3 diffuse = texColour * sDotN;
+
+	vec4 eyeCoords = -vertexPos;
 		
-	vec3 v = normalize(-vertexPos.xyz);
+	vec3 v = normalize(eyeCoords.xyz);
 	vec3 h = normalize(v + s);
 
 	vec3 spec = Material.Ks * pow(max(dot(h, n), 0.0f), Material.Shininess);

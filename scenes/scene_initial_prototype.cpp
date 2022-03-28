@@ -245,8 +245,6 @@ void Scene_Initial_Prototype::render()
 	model = mat4(1.0f);
 	setMatrices();	
 
-	vec3 lightCol = glm::mix(currentCol, targetCol, colourProgress);
-
 	progTexture.use();
 
 	vec4 lightPos = vec4(-49.0f, 50.0f, 0.0f, 1.0f);
@@ -255,6 +253,8 @@ void Scene_Initial_Prototype::render()
 	mat3 normalMatrix = mat3(vec3(view[0]), vec3(view[1]), vec3(view[2]));
 
 	progTexture.setUniform("Spot.Direction", normalMatrix * vec3(0.0f, -50.0f, 0.0f));
+
+	vec3 lightCol = glm::mix(currentCol, targetCol, colourProgress);
 
 	progTexture.setUniform("DirLight.La", lightCol * 0.2f);
 	progTexture.setUniform("DirLight.L", lightCol * 1.0f);
