@@ -17,14 +17,14 @@ OS : Microsoft Windows 10
  * White fog that becomes more noticable as the scene becomes darker.
 
 ## How does it work?
-Simply open the .exe file in the build folder and then sit back and relax!
+Simply open the CampsiteScene.exe file in root folder and then sit back and relax!
 There is no input required from the user.
 
 ## Code walkthrough
 
-[Video Link]()
+[Video Link](https://youtu.be/lVh6gGt6hh8)
 
-## **Scene_Initial_Prototype**
+### **Scene_Initial_Prototype**
 
 The scene_initial_prototype class is responsible for defining and managing all the objects and textures used to render the scene.
 
@@ -47,7 +47,7 @@ The scene_initial_prototype class is responsible for defining and managing all t
  * Compiles both shaders for use.
  * Only has to be completed once on startup.
 
- ## **texture_shader**
+ ### **texture_shader**
 The texture_shader is made up of texture_shader.vert and texture_shader.frag. These can be found in shaders/prototype.
 
 Majority of the processing happens in the fragment shader so we'll be looking at the code in there.
@@ -70,7 +70,7 @@ Majority of the processing happens in the fragment shader so we'll be looking at
  * Fog is calculated by judging the distance between the eye coords and the vertex position on the z axis. If the distance falls between the fog min and max range, the fragment colour is blended between the light processed texel and fog colour.
  * The shade colour is simply the summation of the blinphong calculations for the direction light and spotlight.
 
- ## **normals_shader**
+ ### **normals_shader**
  The normals shader is very similar to the texture shader with the added ability of being able to accept a normal map.
  
  The normal map is used to give the illusion that the object surface has the bumps in the given texture so that it appears to be more 3 dimensional.
@@ -85,3 +85,16 @@ Majority of the processing happens in the fragment shader so we'll be looking at
   ### normals_shader.frag
  * Within main() the texel is extracted from the normal map and its colour values are used to determine the direction of the normal. 
  * This normal is then passed to blinnPhong so that the lighting for this fragment is influenced by the provided normal map.
+
+ ## External Resources
+ Models and textures: https://c4ddownload.com/indians-cartoon-tent-3d-model/
+ 
+ Ground texture and normal map: https://polyhaven.com/a/forest_leaves_02
+
+ Carpet texture: https://www.istockphoto.com/vector/indian-paisley-pattern-vector-mandala-medallion-motif-for-silk-scarf-fabric-print-gm1164854207-320304522
+
+ Metal texture: https://lostandtaken.com/downloads/scratched-scraped-metal-texture-7/
+
+ Tent texture: https://stock.adobe.com/uk/images/ethnic-seamless-pattern-in-native-style-tribal-vector-seamless-pattern-with-native-american-indian-symbols-boarder-pattern-hand-drawn-indian-background-vector-native-american-tent-pattern/374659158
+
+ White China texture: https://www.cadnav.com/textures/7403.html
