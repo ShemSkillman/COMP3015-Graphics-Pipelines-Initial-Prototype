@@ -165,6 +165,7 @@
     <ClCompile Include="main.cpp" />
     <ClCompile Include="Scenes\scenebasic_uniform.cpp" />
     <ClCompile Include="Scenes\scene_edge_detection.cpp" />
+    <ClCompile Include="scenes\scene_gaussian.cpp" />
     <ClCompile Include="scenes\scene_initial_prototype.cpp" />
     <ClCompile Include="Scenes\scene_normal_maps.cpp" />
     <ClCompile Include="Scenes\scene_projection_texture.cpp" />
@@ -178,6 +179,8 @@
     <None Include="shader\basic_uniform.vert" />
     <None Include="shader\edge_shader.frag" />
     <None Include="shader\edge_shader.vert" />
+    <None Include="shader\gaussian_blur_shader.frag" />
+    <None Include="shader\gaussian_blur_shader.vert" />
     <None Include="shader\normal_map_shader.frag" />
     <None Include="shader\normal_map_shader.vert" />
     <None Include="shader\projection_texture_shader.frag" />
@@ -246,6 +249,7 @@
     <ClInclude Include="helper\utils.h" />
     <ClInclude Include="Scenes\scenebasic_uniform.h" />
     <ClInclude Include="Scenes\scene_edge_detection.h" />
+    <ClInclude Include="scenes\scene_gaussian.h" />
     <ClInclude Include="scenes\scene_initial_prototype.h" />
     <ClInclude Include="Scenes\scene_normal_maps.h" />
     <ClInclude Include="Scenes\scene_projection_texture.h" />

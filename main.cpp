@@ -9,6 +9,7 @@
 #include "scenes/scene_projection_texture.h"
 #include "scenes/scene_render_to_texture.h"
 #include "scenes/scene_initial_prototype.h"
+#include "scenes/scene_gaussian.h"
 
 int main(int argc, char* argv[])
 {
@@ -16,7 +17,7 @@ int main(int argc, char* argv[])
 
 	std::unique_ptr<Scene> scene;
 
-	scene = std::unique_ptr<Scene>(new Scene_Initial_Prototype());
+	scene = std::unique_ptr<Scene>(new Scene_Gaussian());
 
 	return runner.run(*scene);
 }
