@@ -82,7 +82,8 @@ vec4 pass3()
 	sum += texelFetchOffset( RenderTex, pix, 0, ivec2(-3,0) ) * Weight[3];
 	sum += texelFetchOffset( RenderTex, pix, 0, ivec2(4,0) ) * Weight[4];
 	sum += texelFetchOffset( RenderTex, pix, 0, ivec2(-4,0) ) * Weight[4];
-	return sum;
+	return sum;
+
 }
 
 
