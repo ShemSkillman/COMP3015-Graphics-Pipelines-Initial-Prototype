@@ -100,6 +100,12 @@ void pass2()
 	 xyzCol.x = (L * xyYCol.x) / (xyYCol.y);
 	 xyzCol.y = L;
 	 xyzCol.z = (L * (1 - xyYCol.x - xyYCol.y))/xyYCol.y;
+
+	 // Convert back to RGB and send to output buffer
+	if( DoToneMap )
+		FragColor = vec4( xyz2rgb * xyzCol, 1.0);
+	else
+		 FragColor = color;
 }
 
 

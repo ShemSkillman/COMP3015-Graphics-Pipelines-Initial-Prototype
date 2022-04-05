@@ -248,7 +248,8 @@ void Scene_HDR::drawScene()
 	model = glm::rotate(model, glm::radians(-90.0f), vec3(1.0f, 0.0f, 0.0f));
 	setMatrices();
 	teapot.render();
-}
+}
+
 
 void Scene_HDR::resize(int w, int h)
 {
