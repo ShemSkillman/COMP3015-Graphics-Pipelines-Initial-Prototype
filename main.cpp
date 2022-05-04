@@ -11,6 +11,7 @@
 #include "scenes/scene_initial_prototype.h"
 #include "scenes/scene_gaussian.h"
 #include "scenes/scene_hdr.h"
+#include "scenes/scene_point_sprites.h"
 
 int main(int argc, char* argv[])
 {
@@ -18,7 +19,7 @@ int main(int argc, char* argv[])
 
 	std::unique_ptr<Scene> scene;
 
-	scene = std::unique_ptr<Scene>(new Scene_HDR());
+	scene = std::unique_ptr<Scene>(new Scene_Point_Sprites());
 
 	return runner.run(*scene);
 }

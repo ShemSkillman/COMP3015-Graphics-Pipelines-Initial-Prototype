@@ -74,8 +74,9 @@ void Scene_Point_Sprites::initScene()
 void Scene_Point_Sprites::compile()
 {
 	try {
-		prog.compileShader("shader/basic_uniform.vert");
-		prog.compileShader("shader/basic_uniform.frag");
+		prog.compileShader("shader/point_sprites_shader.vert");
+		prog.compileShader("shader/point_sprites_shader.frag");
+		prog.compileShader("shader/point_sprites_shader.geom");
 		prog.link();
 		prog.use();
 	} catch (GLSLProgramException &e) {
@@ -92,51 +93,18 @@ void Scene_Point_Sprites::render()
 {
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-	prog.setUniform("Material.Kd", 1.0f, 0.76f, 0.15f);
-	prog.setUniform("Material.Ks", 1.0f, 1.0f, 1.0f);
-	prog.setUniform("Material.Ka", 0.50f, 0.38f, 0.075f);
-	prog.setUniform("Material.Shininess", 180.0f);
+	vec3 cameraPos(0.0f, 0.0f, 3.0f);
+	view = glm::lookAt(cameraPos,
+		vec3(0.0f, 0.0f, 0.0f),
+		vec3(0.0f, 1.0f, 0.0f));
 
 	model = mat4(1.0f);
-	model = glm::translate(model, vec3(3.0f, 0.75f, 3.0f));
-	model = glm::rotate(model, glm::radians(90.0f), vec3(0.0f, 1.0f, 0.0f));
 	setMatrices();
-	mesh->render();
 
-	prog.setUniform("Material.Kd", 0.2f, 0.55f, 0.9f);
-	prog.setUniform("Material.Ks", 0.95f, 0.95f, 0.95f);
-	prog.setUniform("Material.Ka", 0.2f * 0.3f, 0.55f * 0.3f, 0.9f * 0.3f);
-	prog.setUniform("Material.Shininess", 100.0f);
+	glBindVertexArray(sprites);
+	glDrawArrays(GL_POINTS, 0, numSprites);
 
-	model = mat4(1.0f);
-	model = glm::translate(model, vec3(0.0f, 0.0f, -2.0f));
-	model = glm::rotate(model, glm::radians(45.0f), vec3(0.0f, 1.0f, 0.0f));
-	model = glm::rotate(model, glm::radians(-90.0f), vec3(1.0f, 0.0f, 0.0f));
-
-	setMatrices();
-	teapot.render();
-
-	prog.setUniform("Material.Kd", 0.2f, 0.55f, 0.9f);
-	prog.setUniform("Material.Ks", 0.95f, 0.95f, 0.95f);
-	prog.setUniform("Material.Ka", 0.2f * 0.3f, 0.55f * 0.3f, 0.9f * 0.3f);
-	prog.setUniform("Material.Shininess", 100.0f);
-
-	model = mat4(1.0f);
-	model = glm::translate(model, vec3(-1.0f, 0.75f, 3.0f));
-	model = glm::rotate(model, glm::radians(-90.0f), vec3(1.0f, 0.0f, 0.0f));
-
-	setMatrices();
-	torus.render();
-
-	prog.setUniform("Material.Kd", 0.7f, 0.7f, 0.7f);
-	prog.setUniform("Material.Ks", 0.9f, 0.9f, 0.9f);
-	prog.setUniform("Material.Ka", 0.2f, 0.2f, 0.2f);
-	prog.setUniform("Material.Shininess", 180.0f);
-
-	model = mat4(1.0f);
-
-	setMatrices();
-	plane.render();
+	glFinish();
 }
 
 void Scene_Point_Sprites::resize(int w, int h)
@@ -153,7 +121,5 @@ void Scene_Point_Sprites::setMatrices()
 {
 	mat4 mv = view * model;
 	prog.setUniform("ModelViewMatrix", mv);
-	prog.setUniform("NormalMatrix", glm::mat3(vec3(mv[0]),
-		vec3(mv[1]), vec3(mv[2])));
-	prog.setUniform("MVP", projection * mv);
+	prog.setUniform("ProjectionMatrix", projection);
 }
