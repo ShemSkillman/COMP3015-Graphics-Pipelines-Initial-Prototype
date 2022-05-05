@@ -175,6 +175,7 @@
     <ClCompile Include="Scenes\scene_skybox.cpp" />
     <ClCompile Include="Scenes\scene_texture.cpp" />
     <ClCompile Include="Scenes\scene_toon.cpp" />
+    <ClCompile Include="scenes\scene_wave_anim.cpp" />
   </ItemGroup>
   <ItemGroup>
     <None Include="shader\basic_uniform.frag" />
@@ -268,6 +269,7 @@
     <ClInclude Include="Scenes\scene_skybox.h" />
     <ClInclude Include="Scenes\scene_texture.h" />
     <ClInclude Include="Scenes\scene_toon.h" />
+    <ClInclude Include="scenes\scene_wave_anim.h" />
   </ItemGroup>
   <ItemGroup>
     <Text Include="Dependencies\include\glm\CMakeLists.txt" />

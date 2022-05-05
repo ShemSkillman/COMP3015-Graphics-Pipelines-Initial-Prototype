@@ -33,15 +33,15 @@ void Scene_Wave_Anim::initScene()
 	glEnable(GL_DEPTH_TEST);
 
 	prog.setUniform("Light.Intensity", vec3(1.0f, 1.0f, 1.0f));
+	prog.setUniform("Light.Position", vec4(0.0f, 0.0f, 0.0f, 1.0f));
 	angle = glm::half_pi<float>();
 }
 
 void Scene_Wave_Anim::compile()
 {
 	try {
-		prog.compileShader("shader/point_sprites_shader.vert");
-		prog.compileShader("shader/point_sprites_shader.frag");
-		prog.compileShader("shader/point_sprites_shader.geom");
+		prog.compileShader("shader/wave_anim_shader.vert");
+		prog.compileShader("shader/wave_anim_shader.frag");
 		prog.link();
 		prog.use();
 	} catch (GLSLProgramException &e) {
@@ -80,14 +80,14 @@ void Scene_Wave_Anim::resize(int w, int h)
 	glViewport(0, 0, w, h);
 	width = w;
 	height = h;
-	projection = glm::perspective(glm::radians(70.0f), (float)w / h,
-		0.3f, 100.0f);
-
+	projection = glm::perspective(glm::radians(60.0f), (float)w / h, 0.3f, 100.0f);
 }
 
 void Scene_Wave_Anim::setMatrices()
 {
 	mat4 mv = view * model;
 	prog.setUniform("ModelViewMatrix", mv);
-	prog.setUniform("ProjectionMatrix", projection);
+	prog.setUniform("NormalMatrix",
+		glm::mat3(vec3(mv[0]), vec3(mv[1]), vec3(mv[2])));
+	prog.setUniform("MVP", projection * mv);
 }

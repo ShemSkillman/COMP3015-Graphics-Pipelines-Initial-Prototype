@@ -17,10 +17,6 @@ private:
     float angle;
     float time;
 
-    GLuint sprites;
-    int numSprites;
-    float* locations;
-
     void setMatrices();
     void compile();
 

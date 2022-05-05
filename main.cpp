@@ -12,6 +12,7 @@
 #include "scenes/scene_gaussian.h"
 #include "scenes/scene_hdr.h"
 #include "scenes/scene_point_sprites.h"
+#include "scenes/scene_wave_anim.h"
 
 int main(int argc, char* argv[])
 {
@@ -19,7 +20,7 @@ int main(int argc, char* argv[])
 
 	std::unique_ptr<Scene> scene;
 
-	scene = std::unique_ptr<Scene>(new Scene_Point_Sprites());
+	scene = std::unique_ptr<Scene>(new Scene_Wave_Anim());
 
 	return runner.run(*scene);
 }
