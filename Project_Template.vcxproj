@@ -204,6 +204,8 @@
     <None Include="shader\texture_shader.vert" />
     <None Include="shader\toon_shader.frag" />
     <None Include="shader\toon_shader.vert" />
+    <None Include="shader\wave_anim_shader.frag" />
+    <None Include="shader\wave_anim_shader.vert" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Dependencies\include\glad\glad.h" />

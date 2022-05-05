@@ -14,6 +14,7 @@ using std::endl;
 
 #include "glutils.h"
 #include "texture.h"
+#include <time.h>
 
 using glm::vec3;
 using glm::mat4;
