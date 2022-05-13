@@ -1,4 +1,4 @@
-#version 460
+#version 430
 
 in float Transp;
 in vec2 TexCoord;
