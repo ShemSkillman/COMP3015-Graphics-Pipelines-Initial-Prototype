@@ -22,8 +22,9 @@ using glm::mat4;
 using glm::vec4;
 using glm::mat3;
 
-Scene_Particle_Fountain::Scene_Particle_Fountain() : time(0), particleLifetime(5.5f), nParticles(8000),
-									 emitterPos(1, 0, 0), emitterDir(-1, 2, 0)
+Scene_Particle_Fountain::Scene_Particle_Fountain() : angle(0.0f), drawBuf(1), time(0), deltaT(0),
+													 nParticles(4000), particleLifeTime(6.0f), emitterPos(1, 0, 0),
+													 emitterDir(-1, 2, 0)
 {
 }
 
@@ -38,94 +39,112 @@ void Scene_Particle_Fountain::initScene()
 	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 	glEnable(GL_DEPTH_TEST);
 
-	angle = glm::half_pi<float>();
-	initBuffers();
+	model = mat4(1.0f);
 
 	glActiveTexture(GL_TEXTURE0);
 	Texture::loadTexture("media/texture/bluewater.png");
 
+	glActiveTexture(GL_TEXTURE1);
+	ParticleUtils::createRandomTex1D(nParticles * 3);
+
+	initBuffers();
+
 	prog.use();
+	prog.setUniform("RandomTex", 1);
 	prog.setUniform("ParticleTex", 0);
-	prog.setUniform("ParticleLifetime", particleLifetime);
+	prog.setUniform("ParticleLifeTime", particleLifeTime);
+	prog.setUniform("Accel", vec3(0.0f, -0.5f, 0.0f));
 	prog.setUniform("ParticleSize", 0.05f);
-	prog.setUniform("Gravity", vec3(0.0f, -0.2f, 0.0f));
-	prog.setUniform("EmitterPos", emitterPos);
+	prog.setUniform("Emitter", emitterPos);
+	prog.setUniform("EmitterBasis", ParticleUtils::makeArbitraryBasis(emitterDir));
 
 	flatProg.use();
-	flatProg.setUniform("Color", glm::vec4(0.4f, 0.4f, 0.4f, 1.0f));
+	flatProg.setUniform("Color", glm::vec4(0.3f, 0.3f, 0.3f, 1.0f));
 }
 
 void Scene_Particle_Fountain::initBuffers()
 {
-	// Generate the buffer for initial velocity and start (birth) time
-	glGenBuffers(1, &initVel);
-	glGenBuffers(1, &startTime);
+	// Generate the buffers
+	glGenBuffers(2, posBuf);
+	glGenBuffers(2, velBuf);
+	glGenBuffers(2, age);
 
 	// Allocate space for all buffers
-	int size = nParticles * sizeof(float);
-	glBindBuffer(GL_ARRAY_BUFFER, initVel);
-	glBufferData(GL_ARRAY_BUFFER, size * 3, 0, GL_STATIC_DRAW);
-	glBindBuffer(GL_ARRAY_BUFFER, startTime);
-	glBufferData(GL_ARRAY_BUFFER, size, 0, GL_STATIC_DRAW);
+	int size = nParticles * 3 * sizeof(GLfloat);
+	glBindBuffer(GL_ARRAY_BUFFER, posBuf[0]);
+	glBufferData(GL_ARRAY_BUFFER, size, 0, GL_DYNAMIC_COPY);
+	glBindBuffer(GL_ARRAY_BUFFER, posBuf[1]);
+	glBufferData(GL_ARRAY_BUFFER, size, 0, GL_DYNAMIC_COPY);
+	glBindBuffer(GL_ARRAY_BUFFER, velBuf[0]);
+	glBufferData(GL_ARRAY_BUFFER, size, 0, GL_DYNAMIC_COPY);
+	glBindBuffer(GL_ARRAY_BUFFER, velBuf[1]);
+	glBufferData(GL_ARRAY_BUFFER, size, 0, GL_DYNAMIC_COPY);
+	glBindBuffer(GL_ARRAY_BUFFER, age[0]);
+	glBufferData(GL_ARRAY_BUFFER, nParticles * sizeof(float), 0, GL_DYNAMIC_COPY);
+	glBindBuffer(GL_ARRAY_BUFFER, age[1]);
+	glBufferData(GL_ARRAY_BUFFER, nParticles * sizeof(float), 0, GL_DYNAMIC_COPY);
 
-	// Fill the velocity buffer with random velocities
-	glm::mat3 emitterBasis = ParticleUtils::makeArbitraryBasis(emitterDir);
-	vec3 v(0.0f);
-	float velocity, theta, phi;
-	std::vector<GLfloat> data(nParticles * 3);
-
-	for (uint32_t i = 0; i < nParticles; i++)
-	{
-		// Pick the direction of the velocity
-		theta = glm::mix(0.0f, glm::pi<float>() / 20.0f, randFloat());
-		phi = glm::mix(0.0f, glm::two_pi<float>(), randFloat());
-
-		v.x = sinf(theta) * cosf(phi);
-		v.y = cosf(theta);
-		v.z = sinf(theta)* sinf(phi);
-
-		// scale to set the magnitude of the velocity
-		velocity = glm::mix(1.25f, 1.5f, randFloat());
-		v = glm::normalize(emitterBasis * v) * velocity;
-
-		data[3 * i] = v.x;
-		data[3 * i + 1] = v.y;
-		data[3 * i + 2] = v.z;
-	}
-
-	glBindBuffer(GL_ARRAY_BUFFER, initVel);
-	glBufferSubData(GL_ARRAY_BUFFER, 0, size * 3, data.data());
-
-	// Fill the start time buffer
-	float rate = particleLifetime / nParticles;
+	// Fill the first age buffer
+	std::vector<GLfloat> tempData(nParticles);
+	float rate = particleLifeTime / nParticles;
 	for (int i = 0; i < nParticles; i++)
 	{
-		data[i] = rate * i;
+		tempData[i] = rate * (i - nParticles);
 	}
-	glBindBuffer(GL_ARRAY_BUFFER, startTime);
-	glBufferSubData(GL_ARRAY_BUFFER, 0, nParticles * sizeof(float), data.data());
+	glBindBuffer(GL_ARRAY_BUFFER, age[0]);
+	glBufferSubData(GL_ARRAY_BUFFER, 0, nParticles * sizeof(float), tempData.data());
 
 	glBindBuffer(GL_ARRAY_BUFFER, 0);
 
-	glGenVertexArrays(1, &particles);
-	glBindVertexArray(particles);
-	glBindBuffer(GL_ARRAY_BUFFER, initVel);
+	// Create vertex arrays for each set of buffers
+	glGenVertexArrays(2, particleArray);
+
+	// Set up particle array 0
+	glBindVertexArray(particleArray[0]);
+	glBindBuffer(GL_ARRAY_BUFFER, posBuf[0]);
 	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 0, 0);
 	glEnableVertexAttribArray(0);
 
-	glBindBuffer(GL_ARRAY_BUFFER, startTime);
-	glVertexAttribPointer(1, 1, GL_FLOAT, GL_FALSE, 0, 0);
+	glBindBuffer(GL_ARRAY_BUFFER, velBuf[0]);
+	glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 0, 0);
 	glEnableVertexAttribArray(1);
 
-	glVertexAttribDivisor(0, 1);
-	glVertexAttribDivisor(1, 1);
+	glBindBuffer(GL_ARRAY_BUFFER, age[0]);
+	glVertexAttribPointer(2, 1, GL_FLOAT, GL_FALSE, 0, 0);
+	glEnableVertexAttribArray(2);
+
+	// Setup particle array 1
+	glBindVertexArray(particleArray[1]);
+	glBindBuffer(GL_ARRAY_BUFFER, posBuf[1]);
+	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 0, 0);
+	glEnableVertexAttribArray(0);
+
+	glBindBuffer(GL_ARRAY_BUFFER, velBuf[1]);
+	glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 0, 0);
+	glEnableVertexAttribArray(1);
+
+	glBindBuffer(GL_ARRAY_BUFFER, age[1]);
+	glVertexAttribPointer(2, 1, GL_FLOAT, GL_FALSE, 0, 0);
+	glEnableVertexAttribArray(2);
 
 	glBindVertexArray(0);
-}
 
-float Scene_Particle_Fountain::randFloat()
-{
-	return rand.nextFloat();
+	// Setup the feedback objects
+	glGenTransformFeedbacks(2, feedback);
+
+	// Transform feedback 0
+	glBindTransformFeedback(GL_TRANSFORM_FEEDBACK, feedback[0]);
+	glBindBufferBase(GL_TRANSFORM_FEEDBACK_BUFFER, 0, posBuf[0]);
+	glBindBufferBase(GL_TRANSFORM_FEEDBACK_BUFFER, 1, velBuf[0]);
+	glBindBufferBase(GL_TRANSFORM_FEEDBACK_BUFFER, 2, age[0]);
+
+	// Transform feedback 1
+	glBindTransformFeedback(GL_TRANSFORM_FEEDBACK, feedback[1]);
+	glBindBufferBase(GL_TRANSFORM_FEEDBACK_BUFFER, 0, posBuf[1]);
+	glBindBufferBase(GL_TRANSFORM_FEEDBACK_BUFFER, 1, velBuf[1]);
+	glBindBufferBase(GL_TRANSFORM_FEEDBACK_BUFFER, 2, age[1]);
+
+	glBindTransformFeedback(GL_TRANSFORM_FEEDBACK, 0);
 }
 
 void Scene_Particle_Fountain::compile()
@@ -133,6 +152,12 @@ void Scene_Particle_Fountain::compile()
 	try {
 		prog.compileShader("shader/particle_fountain_shader.vert");
 		prog.compileShader("shader/particle_fountain_shader.frag");
+
+		// Setup the transform feedback (must be done before linking the program)
+		GLuint progHandle = prog.getHandle();
+		const char* outputNames[] = { "Position", "Velocity", "Age" };
+		glTransformFeedbackVaryings(progHandle, 3, outputNames, GL_SEPARATE_ATTRIBS);
+
 		prog.link();
 		prog.use();
 
@@ -149,6 +174,7 @@ void Scene_Particle_Fountain::compile()
 
 void Scene_Particle_Fountain::update( float t )
 {
+	deltaT = t - time;
 	time = t;
 	angle = std::fmod(angle + 0.01f, glm::two_pi<float>());
 }
@@ -157,22 +183,48 @@ void Scene_Particle_Fountain::render()
 {
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-	view = glm::lookAt(vec3(3.0f * cos(angle), 1.5f, 3.0f * sin(angle)),
-		vec3(0.0f, 1.5f, 0.0f), vec3(0.0f, 1.0f, 0.0f));
-	model = mat4(1.0f);
-
 	flatProg.use();
 	setMatrices(flatProg);
 	grid.render();
 
-	glDepthMask(GL_FALSE);
 	prog.use();
-	setMatrices(prog);
 	prog.setUniform("Time", time);
-	glBindVertexArray(particles);
+	prog.setUniform("DeltaT", deltaT);
+
+	// Update pass
+	prog.setUniform("Pass", 1);
+
+	glEnable(GL_RASTERIZER_DISCARD);
+	glBindTransformFeedback(GL_TRANSFORM_FEEDBACK, feedback[drawBuf]);
+	glBeginTransformFeedback(GL_POINTS);
+
+	glBindVertexArray(particleArray[1 - drawBuf]);
+	glVertexAttribDivisor(0, 0);
+	glVertexAttribDivisor(1, 0);
+	glVertexAttribDivisor(2, 0);
+	glDrawArrays(GL_POINTS, 0, nParticles);
+	glBindVertexArray(0);
+
+	glEndTransformFeedback();
+	glDisable(GL_RASTERIZER_DISCARD);
+
+	// Render pas
+	prog.setUniform("Pass", 2);
+	view = glm::lookAt(vec3(4.0f * cos(angle), 1.5f, 4.0f * sin(angle)), vec3(0.0f, 1.5f, 0.0f),
+		vec3(0.0f, 1.0f, 0.0f));
+	setMatrices(prog);
+
+	glDepthMask(GL_FALSE);
+	glBindVertexArray(particleArray[drawBuf]);
+	glVertexAttribDivisor(0, 1);
+	glVertexAttribDivisor(1, 1);
+	glVertexAttribDivisor(2, 1);
 	glDrawArraysInstanced(GL_TRIANGLES, 0, 6, nParticles);
 	glBindVertexArray(0);
 	glDepthMask(GL_TRUE);
+
+	// Swap buffers
+	drawBuf = 1 - drawBuf;
 }
 
 void Scene_Particle_Fountain::resize(int w, int h)
