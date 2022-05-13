@@ -12,7 +12,7 @@
 class Scene_Particle_Fountain : public Scene
 {
 private:
-    GLSLProgram prog;
+    GLSLProgram prog, flatProg;
 
     Random rand;
 

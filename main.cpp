@@ -13,6 +13,7 @@
 #include "scenes/scene_hdr.h"
 #include "scenes/scene_point_sprites.h"
 #include "scenes/scene_wave_anim.h"
+#include "scenes/scene_particle_fountain.h"
 
 int main(int argc, char* argv[])
 {
@@ -20,7 +21,7 @@ int main(int argc, char* argv[])
 
 	std::unique_ptr<Scene> scene;
 
-	scene = std::unique_ptr<Scene>(new Scene_Wave_Anim());
+	scene = std::unique_ptr<Scene>(new Scene_Particle_Fountain());
 
 	return runner.run(*scene);
 }

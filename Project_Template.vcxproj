@@ -184,6 +184,8 @@
     <None Include="shader\basic_uniform.vert" />
     <None Include="shader\edge_shader.frag" />
     <None Include="shader\edge_shader.vert" />
+    <None Include="shader\flat_frag.glsl" />
+    <None Include="shader\flat_vert.glsl" />
     <None Include="shader\gaussian_blur_shader.frag" />
     <None Include="shader\gaussian_blur_shader.vert" />
     <None Include="shader\hdr_shader.frag" />
